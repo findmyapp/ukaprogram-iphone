@@ -18,6 +18,10 @@
 		198B19C713D444A3003AD828 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19B713D444A3003AD828 /* SBJsonBase.m */; };
 		198B19C813D444A3003AD828 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19B913D444A3003AD828 /* SBJsonParser.m */; };
 		198B19C913D444A3003AD828 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19BB13D444A3003AD828 /* SBJsonWriter.m */; };
+		198B19E213D48316003AD828 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19E113D48316003AD828 /* StartViewController.m */; };
+		198B19E413D4834D003AD828 /* StartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 198B19E313D4834D003AD828 /* StartView.xib */; };
+		198B19E613D49577003AD828 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19E513D49577003AD828 /* checked.png */; };
+		198B19E813D49580003AD828 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19E713D49580003AD828 /* unchecked.png */; };
 		1992921913B9C3F3001689C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921813B9C3F3001689C8 /* UIKit.framework */; };
 		1992921B13B9C3F3001689C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921A13B9C3F3001689C8 /* Foundation.framework */; };
 		1992921D13B9C3F3001689C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921C13B9C3F3001689C8 /* CoreGraphics.framework */; };
@@ -63,6 +67,11 @@
 		198B19B913D444A3003AD828 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		198B19BA13D444A3003AD828 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		198B19BB13D444A3003AD828 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		198B19E013D48316003AD828 /* StartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartViewController.h; path = ../StartViewController.h; sourceTree = "<group>"; };
+		198B19E113D48316003AD828 /* StartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StartViewController.m; path = ../StartViewController.m; sourceTree = "<group>"; };
+		198B19E313D4834D003AD828 /* StartView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StartView.xib; path = ../StartView.xib; sourceTree = "<group>"; };
+		198B19E513D49577003AD828 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
+		198B19E713D49580003AD828 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		1992921413B9C3F3001689C8 /* UKEprogram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UKEprogram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1992921813B9C3F3001689C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1992921A13B9C3F3001689C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -151,6 +160,8 @@
 			children = (
 				19C8FAD213BDB19B001B5CB9 /* Default.png */,
 				1992924713B9F4D6001689C8 /* iPhoneIcon_Small.png */,
+				198B19E713D49580003AD828 /* unchecked.png */,
+				198B19E513D49577003AD828 /* checked.png */,
 				1992924513B9F48B001689C8 /* iPhoneIcon_Big.png */,
 				1992922013B9C3F3001689C8 /* UKEprogram */,
 				1992921713B9C3F3001689C8 /* Frameworks */,
@@ -182,15 +193,18 @@
 			children = (
 				198B199F13D444A3003AD828 /* Facebook */,
 				1992924113B9EC5A001689C8 /* Model */,
-				1992923A13B9CE9C001689C8 /* EventsTableView.xib */,
 				1992922913B9C3F3001689C8 /* UKEprogramAppDelegate.h */,
 				1992922A13B9C3F3001689C8 /* UKEprogramAppDelegate.m */,
 				1992922C13B9C3F3001689C8 /* MainWindow.xib */,
+				198B19E013D48316003AD828 /* StartViewController.h */,
+				198B19E113D48316003AD828 /* StartViewController.m */,
+				198B19E313D4834D003AD828 /* StartView.xib */,
 				1992923713B9CBAF001689C8 /* EventsTableViewController.h */,
 				1992923813B9CBAF001689C8 /* EventsTableViewController.m */,
+				1992923A13B9CE9C001689C8 /* EventsTableView.xib */,
 				1992923C13B9D578001689C8 /* EventDetailsViewController.h */,
-				1992923F13B9D5BE001689C8 /* EventDetailsView.xib */,
 				1992923D13B9D578001689C8 /* EventDetailsViewController.m */,
+				1992923F13B9D5BE001689C8 /* EventDetailsView.xib */,
 				1992922F13B9C3F3001689C8 /* UKEprogram.xcdatamodeld */,
 				1992922113B9C3F3001689C8 /* Supporting Files */,
 			);
@@ -277,6 +291,9 @@
 				1992924813B9F4D6001689C8 /* iPhoneIcon_Small.png in Resources */,
 				19C8FAD313BDB19B001B5CB9 /* Default.png in Resources */,
 				198B19C013D444A3003AD828 /* FBDialog.bundle in Resources */,
+				198B19E413D4834D003AD828 /* StartView.xib in Resources */,
+				198B19E613D49577003AD828 /* checked.png in Resources */,
+				198B19E813D49580003AD828 /* unchecked.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +321,7 @@
 				198B19C713D444A3003AD828 /* SBJsonBase.m in Sources */,
 				198B19C813D444A3003AD828 /* SBJsonParser.m in Sources */,
 				198B19C913D444A3003AD828 /* SBJsonWriter.m in Sources */,
+				198B19E213D48316003AD828 /* StartViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
