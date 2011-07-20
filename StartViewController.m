@@ -17,6 +17,7 @@
 @synthesize artistButton;
 @synthesize favoritesButton;
 @synthesize eventsTableViewController;
+//UIImageView *titleImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,12 +55,18 @@
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.rootController pushViewController:eventsTableViewController animated:YES];
     [eventsTableViewController showAllEvents];
+    NSDate *now = [[NSDate alloc] init];
+    [eventsTableViewController scrollToDate:now animated:YES];
+    [now dealloc];
 }
 -(void)favoriteEventsClicked:(id)sender {
     self.eventsTableViewController = [[EventsTableViewController alloc] initWithNibName:@"EventsTableView" bundle:nil];
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.rootController pushViewController:eventsTableViewController animated:YES];
     [eventsTableViewController showFavoriteEvents];
+    NSDate *now = [[NSDate alloc] init];
+    [eventsTableViewController scrollToDate:now animated:YES];
+    [now dealloc];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -69,6 +76,15 @@
     [allButton addTarget:self action:@selector(allEventsClicked:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
     [favoritesButton addTarget:self action:@selector(favoriteEventsClicked:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
     self.navigationItem.title = @"Hjem";
+    
+    /*
+    titleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checked.png"]];
+    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    UINavigationBar *navBar = [[delegate rootController] navigationBar];
+    CGRect navBarFrame = CGRectMake(0, 0, 300, 400);
+    [navBar setFrame:navBarFrame];
+    [navBar insertSubview:titleImage atIndex:0];
+    */
 }
 
 
