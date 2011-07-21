@@ -29,6 +29,7 @@
 		198B19FA13D8296E003AD828 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19F713D8296D003AD828 /* checked.png */; };
 		198B19FB13D8296E003AD828 /* unckecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19F813D8296D003AD828 /* unckecked.png */; };
 		198B19FD13D82AA0003AD828 /* mainbuttonprogram.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19FC13D82AA0003AD828 /* mainbuttonprogram.png */; };
+		198B19FF13D835D9003AD828 /* FriendsTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 198B19FE13D835D9003AD828 /* FriendsTableView.xib */; };
 		1992921913B9C3F3001689C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921813B9C3F3001689C8 /* UIKit.framework */; };
 		1992921B13B9C3F3001689C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921A13B9C3F3001689C8 /* Foundation.framework */; };
 		1992921D13B9C3F3001689C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921C13B9C3F3001689C8 /* CoreGraphics.framework */; };
@@ -89,6 +90,7 @@
 		198B19F713D8296D003AD828 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
 		198B19F813D8296D003AD828 /* unckecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unckecked.png; sourceTree = "<group>"; };
 		198B19FC13D82AA0003AD828 /* mainbuttonprogram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainbuttonprogram.png; sourceTree = "<group>"; };
+		198B19FE13D835D9003AD828 /* FriendsTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendsTableView.xib; sourceTree = "<group>"; };
 		1992921413B9C3F3001689C8 /* UKEprogram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UKEprogram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1992921813B9C3F3001689C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1992921A13B9C3F3001689C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -233,6 +235,7 @@
 				198B19F113D6F07E003AD828 /* FilterView.xib */,
 				198B19F313D82847003AD828 /* FriendsTableViewController.h */,
 				198B19F413D82848003AD828 /* FriendsTableViewController.m */,
+				198B19FE13D835D9003AD828 /* FriendsTableView.xib */,
 				1992922113B9C3F3001689C8 /* Supporting Files */,
 			);
 			path = UKEprogram;
@@ -325,6 +328,7 @@
 				198B19FA13D8296E003AD828 /* checked.png in Resources */,
 				198B19FB13D8296E003AD828 /* unckecked.png in Resources */,
 				198B19FD13D82AA0003AD828 /* mainbuttonprogram.png in Resources */,
+				198B19FF13D835D9003AD828 /* FriendsTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
