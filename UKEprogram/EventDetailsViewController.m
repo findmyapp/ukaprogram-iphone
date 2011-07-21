@@ -60,6 +60,12 @@ IBOutlet UIImage *eventImg;
 {
 }
 */
+- (void)attendingClicked:(id)sender
+{
+    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    NSLog([delegate.facebook accessToken]);
+}
+
 - (void)pushFriendsView:(id)sender
 {
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -126,6 +132,7 @@ IBOutlet UIImage *eventImg;
         [attendingButton setTitle:@"Loading..." forState:UIControlStateNormal];
         [friendsTableViewController loadFriends:self];
         [friendsButton addTarget:self action:@selector(pushFriendsView:) forControlEvents:UIControlEventTouchUpInside];
+        [attendingButton addTarget:self action:@selector(attendingClicked:) forControlEvents:UIControlEventTouchUpInside];
         //askforfriends...
     }
      

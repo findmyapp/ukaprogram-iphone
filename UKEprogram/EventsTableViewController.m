@@ -408,6 +408,8 @@ static int secondsInDay = 86400;
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     dateLabel.text = [NSString stringWithFormat:@"%@ - %@", [delegate.onlyTimeFormat stringFromDate:e.showingTime], e.place];
     
+    NSLog(@"Er favoritt: %i", [e.favorites intValue]);
+    
     if ([e.favorites intValue] > 0) {
         [button setBackgroundImage:delegate.checkedImage forState:UIControlStateNormal];
     }

@@ -341,6 +341,13 @@
     return __persistentStoreCoordinator;
 }
 
+-(void)fbDidLogout {
+    
+}
+-(void)fbDidNotLogin:(BOOL)cancelled {
+    
+}
+
 #pragma mark - Application's Documents directory
 
 /**
