@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		191C310013D84CEA007B091B /* mainbottomright.png in Resources */ = {isa = PBXBuildFile; fileRef = 191C30FF13D84CEA007B091B /* mainbottomright.png */; };
+		191C310313D85277007B091B /* mainlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 191C310113D85277007B091B /* mainlogo.png */; };
+		191C310413D85277007B091B /* maintopleft.png in Resources */ = {isa = PBXBuildFile; fileRef = 191C310213D85277007B091B /* maintopleft.png */; };
 		198B19BF13D444A3003AD828 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19A413D444A3003AD828 /* Facebook.m */; };
 		198B19C013D444A3003AD828 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 198B19A713D444A3003AD828 /* FBDialog.bundle */; };
 		198B19C113D444A3003AD828 /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19A913D444A3003AD828 /* FBDialog.m */; };
@@ -51,6 +54,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		191C30FF13D84CEA007B091B /* mainbottomright.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainbottomright.png; sourceTree = "<group>"; };
+		191C310113D85277007B091B /* mainlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainlogo.png; sourceTree = "<group>"; };
+		191C310213D85277007B091B /* maintopleft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = maintopleft.png; sourceTree = "<group>"; };
 		198B19A313D444A3003AD828 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		198B19A413D444A3003AD828 /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
 		198B19A513D444A3003AD828 /* facebook_ios_sdk_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = facebook_ios_sdk_Prefix.pch; sourceTree = "<group>"; };
@@ -134,6 +140,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		191C30FD13D84CC4007B091B /* images */ = {
+			isa = PBXGroup;
+			children = (
+				1992924513B9F48B001689C8 /* iPhoneIcon_Big.png */,
+				1992924713B9F4D6001689C8 /* iPhoneIcon_Small.png */,
+				198B19FC13D82AA0003AD828 /* mainbuttonprogram.png */,
+				198B19F813D8296D003AD828 /* unckecked.png */,
+				198B19F713D8296D003AD828 /* checked.png */,
+				19C8FAD213BDB19B001B5CB9 /* Default.png */,
+				198B19F613D8296D003AD828 /* mainbuttonprogram.png */,
+				191C310113D85277007B091B /* mainlogo.png */,
+				191C310213D85277007B091B /* maintopleft.png */,
+				191C30FF13D84CEA007B091B /* mainbottomright.png */,
+			);
+			name = images;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		198B199F13D444A3003AD828 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,13 +201,6 @@
 		1992920913B9C3F3001689C8 = {
 			isa = PBXGroup;
 			children = (
-				19C8FAD213BDB19B001B5CB9 /* Default.png */,
-				198B19F613D8296D003AD828 /* mainbuttonprogram.png */,
-				198B19F713D8296D003AD828 /* checked.png */,
-				198B19F813D8296D003AD828 /* unckecked.png */,
-				198B19FC13D82AA0003AD828 /* mainbuttonprogram.png */,
-				1992924713B9F4D6001689C8 /* iPhoneIcon_Small.png */,
-				1992924513B9F48B001689C8 /* iPhoneIcon_Big.png */,
 				1992922013B9C3F3001689C8 /* UKEprogram */,
 				1992921713B9C3F3001689C8 /* Frameworks */,
 				1992921513B9C3F3001689C8 /* Products */,
@@ -212,6 +229,7 @@
 		1992922013B9C3F3001689C8 /* UKEprogram */ = {
 			isa = PBXGroup;
 			children = (
+				191C30FD13D84CC4007B091B /* images */,
 				198B199F13D444A3003AD828 /* Facebook */,
 				1992924113B9EC5A001689C8 /* Model */,
 				1992922913B9C3F3001689C8 /* UKEprogramAppDelegate.h */,
@@ -329,6 +347,9 @@
 				198B19FB13D8296E003AD828 /* unckecked.png in Resources */,
 				198B19FD13D82AA0003AD828 /* mainbuttonprogram.png in Resources */,
 				198B19FF13D835D9003AD828 /* FriendsTableView.xib in Resources */,
+				191C310013D84CEA007B091B /* mainbottomright.png in Resources */,
+				191C310313D85277007B091B /* mainlogo.png in Resources */,
+				191C310413D85277007B091B /* maintopleft.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

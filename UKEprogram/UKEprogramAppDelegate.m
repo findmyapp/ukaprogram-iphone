@@ -70,10 +70,8 @@
     NSString *responseString = [[NSString alloc] initWithData:responseData  encoding:NSASCIIStringEncoding];
     //NSLog(@"RESPONSE %i: %@", [responseData length] ,responseString);
     [responseData release];
-    NSDictionary *results = [responseString JSONValue];
+    NSArray *events = [responseString JSONValue];
     [responseString release];
-    //NSDictionary *program = [results objectForKey:@"program"];
-    NSArray *events = [results objectForKey:@"events"];
     NSLog(@"Number of events fetched: %i", [events count]);
     
     NSManagedObjectContext *con = [self managedObjectContext];
