@@ -148,7 +148,7 @@
     [onlyDateFormat setDateFormat:@"dd.MM"];
     onlyTimeFormat  = [[NSDateFormatter alloc] init];
     [onlyTimeFormat setDateFormat:@"HH:mm"];
-    weekDays = [[NSArray alloc] initWithObjects:@"ubrukt",@"Søndag",@"Mandag",@"Tirsdag",@"Onsdag",@"Torsdag",@"Fredag",@"Lørdag", nil];
+    weekDays = [[NSArray alloc] initWithObjects:@"ubrukt",@"Sondag",@"Mandag",@"Tirsdag",@"Onsdag",@"Torsdag",@"Fredag",@"Lordag", nil];
     checkedImage = [UIImage imageNamed:@"checked.png"];
     uncheckedImage = [UIImage imageNamed:@"unchecked.png"];
     
