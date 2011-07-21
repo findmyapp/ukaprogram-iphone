@@ -20,12 +20,15 @@
 		198B19C913D444A3003AD828 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19BB13D444A3003AD828 /* SBJsonWriter.m */; };
 		198B19E213D48316003AD828 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19E113D48316003AD828 /* StartViewController.m */; };
 		198B19E413D4834D003AD828 /* StartView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 198B19E313D4834D003AD828 /* StartView.xib */; };
-		198B19E613D49577003AD828 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19E513D49577003AD828 /* checked.png */; };
-		198B19E813D49580003AD828 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19E713D49580003AD828 /* unchecked.png */; };
 		198B19EB13D6BC6E003AD828 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19EA13D6BC6D003AD828 /* CalendarViewController.m */; };
 		198B19ED13D6BD40003AD828 /* CalendarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 198B19EC13D6BD3F003AD828 /* CalendarView.xib */; };
 		198B19F013D6F057003AD828 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19EF13D6F057003AD828 /* FilterViewController.m */; };
 		198B19F213D6F07E003AD828 /* FilterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 198B19F113D6F07E003AD828 /* FilterView.xib */; };
+		198B19F513D82849003AD828 /* FriendsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 198B19F413D82848003AD828 /* FriendsTableViewController.m */; };
+		198B19F913D8296E003AD828 /* mainbuttonprogram.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19F613D8296D003AD828 /* mainbuttonprogram.png */; };
+		198B19FA13D8296E003AD828 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19F713D8296D003AD828 /* checked.png */; };
+		198B19FB13D8296E003AD828 /* unckecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19F813D8296D003AD828 /* unckecked.png */; };
+		198B19FD13D82AA0003AD828 /* mainbuttonprogram.png in Resources */ = {isa = PBXBuildFile; fileRef = 198B19FC13D82AA0003AD828 /* mainbuttonprogram.png */; };
 		1992921913B9C3F3001689C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921813B9C3F3001689C8 /* UIKit.framework */; };
 		1992921B13B9C3F3001689C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921A13B9C3F3001689C8 /* Foundation.framework */; };
 		1992921D13B9C3F3001689C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1992921C13B9C3F3001689C8 /* CoreGraphics.framework */; };
@@ -74,14 +77,18 @@
 		198B19E013D48316003AD828 /* StartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartViewController.h; path = ../StartViewController.h; sourceTree = "<group>"; };
 		198B19E113D48316003AD828 /* StartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StartViewController.m; path = ../StartViewController.m; sourceTree = "<group>"; };
 		198B19E313D4834D003AD828 /* StartView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StartView.xib; path = ../StartView.xib; sourceTree = "<group>"; };
-		198B19E513D49577003AD828 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
-		198B19E713D49580003AD828 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		198B19E913D6BC6D003AD828 /* CalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewController.h; sourceTree = "<group>"; };
 		198B19EA13D6BC6D003AD828 /* CalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewController.m; sourceTree = "<group>"; };
 		198B19EC13D6BD3F003AD828 /* CalendarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarView.xib; sourceTree = "<group>"; };
 		198B19EE13D6F056003AD828 /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
 		198B19EF13D6F057003AD828 /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
 		198B19F113D6F07E003AD828 /* FilterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterView.xib; sourceTree = "<group>"; };
+		198B19F313D82847003AD828 /* FriendsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsTableViewController.h; sourceTree = "<group>"; };
+		198B19F413D82848003AD828 /* FriendsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsTableViewController.m; sourceTree = "<group>"; };
+		198B19F613D8296D003AD828 /* mainbuttonprogram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainbuttonprogram.png; sourceTree = "<group>"; };
+		198B19F713D8296D003AD828 /* checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checked.png; sourceTree = "<group>"; };
+		198B19F813D8296D003AD828 /* unckecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unckecked.png; sourceTree = "<group>"; };
+		198B19FC13D82AA0003AD828 /* mainbuttonprogram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainbuttonprogram.png; sourceTree = "<group>"; };
 		1992921413B9C3F3001689C8 /* UKEprogram.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UKEprogram.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1992921813B9C3F3001689C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1992921A13B9C3F3001689C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -169,9 +176,11 @@
 			isa = PBXGroup;
 			children = (
 				19C8FAD213BDB19B001B5CB9 /* Default.png */,
+				198B19F613D8296D003AD828 /* mainbuttonprogram.png */,
+				198B19F713D8296D003AD828 /* checked.png */,
+				198B19F813D8296D003AD828 /* unckecked.png */,
+				198B19FC13D82AA0003AD828 /* mainbuttonprogram.png */,
 				1992924713B9F4D6001689C8 /* iPhoneIcon_Small.png */,
-				198B19E713D49580003AD828 /* unchecked.png */,
-				198B19E513D49577003AD828 /* checked.png */,
 				1992924513B9F48B001689C8 /* iPhoneIcon_Big.png */,
 				1992922013B9C3F3001689C8 /* UKEprogram */,
 				1992921713B9C3F3001689C8 /* Frameworks */,
@@ -222,6 +231,8 @@
 				198B19EE13D6F056003AD828 /* FilterViewController.h */,
 				198B19EF13D6F057003AD828 /* FilterViewController.m */,
 				198B19F113D6F07E003AD828 /* FilterView.xib */,
+				198B19F313D82847003AD828 /* FriendsTableViewController.h */,
+				198B19F413D82848003AD828 /* FriendsTableViewController.m */,
 				1992922113B9C3F3001689C8 /* Supporting Files */,
 			);
 			path = UKEprogram;
@@ -308,10 +319,12 @@
 				19C8FAD313BDB19B001B5CB9 /* Default.png in Resources */,
 				198B19C013D444A3003AD828 /* FBDialog.bundle in Resources */,
 				198B19E413D4834D003AD828 /* StartView.xib in Resources */,
-				198B19E613D49577003AD828 /* checked.png in Resources */,
-				198B19E813D49580003AD828 /* unchecked.png in Resources */,
 				198B19ED13D6BD40003AD828 /* CalendarView.xib in Resources */,
 				198B19F213D6F07E003AD828 /* FilterView.xib in Resources */,
+				198B19F913D8296E003AD828 /* mainbuttonprogram.png in Resources */,
+				198B19FA13D8296E003AD828 /* checked.png in Resources */,
+				198B19FB13D8296E003AD828 /* unckecked.png in Resources */,
+				198B19FD13D82AA0003AD828 /* mainbuttonprogram.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +355,7 @@
 				198B19E213D48316003AD828 /* StartViewController.m in Sources */,
 				198B19EB13D6BC6E003AD828 /* CalendarViewController.m in Sources */,
 				198B19F013D6F057003AD828 /* FilterViewController.m in Sources */,
+				198B19F513D82849003AD828 /* FriendsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

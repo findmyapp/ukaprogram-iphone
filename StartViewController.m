@@ -9,6 +9,7 @@
 #import "StartViewController.h"
 #import "UKEprogramAppDelegate.h"
 #import "EventsTableViewController.h"
+#import "Facebook.h"
 
 
 @implementation StartViewController
@@ -17,6 +18,7 @@
 @synthesize artistButton;
 @synthesize favoritesButton;
 @synthesize eventsTableViewController;
+@synthesize fbLoginButton;
 //UIImageView *titleImage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -41,6 +43,13 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+-(void)facebookLogin:(id)sender
+{
+    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    Facebook *facebook = delegate.facebook;
+    [facebook authorize:nil delegate:delegate];
+}
+
 #pragma mark - View lifecycle
 
 /*
@@ -49,6 +58,15 @@
 {
 }
 */
+- (void)setLoggedIn:(bool)sessionValid {
+    if (!sessionValid) {
+        [fbLoginButton addTarget:self action:@selector(facebookLogin:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
+    } else {
+        [fbLoginButton setEnabled:NO];
+        [fbLoginButton setTitle:@"Du er logget inn" forState:UIControlStateNormal];
+    }
+}
+
 -(void)allEventsClicked:(id)sender {
     
     self.eventsTableViewController = [[EventsTableViewController alloc] initWithNibName:@"EventsTableView" bundle:nil];
@@ -76,6 +94,12 @@
     [allButton addTarget:self action:@selector(allEventsClicked:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
     [favoritesButton addTarget:self action:@selector(favoriteEventsClicked:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
     self.navigationItem.title = @"Hjem";
+    
+    
+    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    Facebook *facebook = delegate.facebook;
+    
+    [self setLoggedIn: [facebook isSessionValid]];
     
     /*
     titleImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checked.png"]];
@@ -119,5 +143,7 @@
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [[delegate rootController] setNavigationBarHidden:NO];
 }
+
+
 
 @end

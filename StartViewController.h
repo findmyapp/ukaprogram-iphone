@@ -13,6 +13,7 @@
     IBOutlet UIButton *allButton;
     IBOutlet UIButton *artistButton;
     IBOutlet UIButton *favoritesButton;
+    IBOutlet UIButton *fbLoginButton;
     IBOutlet EventsTableViewController *eventsTableViewController;
     
 }
@@ -20,6 +21,7 @@
 @property (nonatomic, retain) UIButton *artistButton;
 @property (nonatomic, retain) UIButton *favoritesButton;
 @property (nonatomic, retain) EventsTableViewController *eventsTableViewController;
+@property (nonatomic, retain) UIButton *fbLoginButton;
 
-
+-(void) setLoggedIn:(bool)sessionValid;
 @end
