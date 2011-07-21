@@ -78,6 +78,7 @@ static int secondsInDay = 86400;
         datePicker.maximumDate = [[listOfEvents objectAtIndex:[listOfEvents count]-1] showingTime];
     }
     NSLog(@"Table updatet");
+    [self.tableView reloadData];
     
 }
 
@@ -223,9 +224,10 @@ static int secondsInDay = 86400;
 
 - (void) datePickChanged:(id)sender
 {
+    BOOL scrollEnabled = [self.tableView isScrollEnabled];
     [self.tableView setScrollEnabled:YES];
     [self scrollToDate:[datePicker date] animated:NO];
-    [self.tableView setScrollEnabled:NO];
+    [self.tableView setScrollEnabled:scrollEnabled];
     [self.datePicker setCenter:[self makeGoodPickerPosition]];
 }
 - (void) hideDatePicker
