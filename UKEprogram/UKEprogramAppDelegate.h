@@ -40,4 +40,7 @@
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+- (void)fbDidLogin;
+- (void)fbDidLogout;
+- (void)fbDidNotLogin:(BOOL)cancelled;
 @end
