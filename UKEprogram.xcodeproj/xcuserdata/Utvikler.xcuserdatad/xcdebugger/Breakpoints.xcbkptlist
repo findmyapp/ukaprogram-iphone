@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/EventDetailsViewController.m"
-         timestampString = "332938663.346606"
+         timestampString = "332940408.705983"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "134"
-         endingLineNumber = "134"
+         startingLineNumber = "141"
+         endingLineNumber = "141"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -71,20 +71,6 @@
          startingLineNumber = "426"
          endingLineNumber = "426"
          landmarkName = "-tableView:titleForHeaderInSection:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "UKEprogram/FriendsTableViewController.m"
-         timestampString = "332938663.346606"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
-         landmarkName = "-loadFriends:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

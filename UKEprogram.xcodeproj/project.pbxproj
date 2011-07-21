@@ -227,15 +227,15 @@
 				1992923D13B9D578001689C8 /* EventDetailsViewController.m */,
 				1992923F13B9D5BE001689C8 /* EventDetailsView.xib */,
 				1992922F13B9C3F3001689C8 /* UKEprogram.xcdatamodeld */,
-				198B19E913D6BC6D003AD828 /* CalendarViewController.h */,
-				198B19EA13D6BC6D003AD828 /* CalendarViewController.m */,
-				198B19EC13D6BD3F003AD828 /* CalendarView.xib */,
 				198B19EE13D6F056003AD828 /* FilterViewController.h */,
 				198B19EF13D6F057003AD828 /* FilterViewController.m */,
 				198B19F113D6F07E003AD828 /* FilterView.xib */,
 				198B19F313D82847003AD828 /* FriendsTableViewController.h */,
 				198B19F413D82848003AD828 /* FriendsTableViewController.m */,
 				198B19FE13D835D9003AD828 /* FriendsTableView.xib */,
+				198B19E913D6BC6D003AD828 /* CalendarViewController.h */,
+				198B19EA13D6BC6D003AD828 /* CalendarViewController.m */,
+				198B19EC13D6BD3F003AD828 /* CalendarView.xib */,
 				1992922113B9C3F3001689C8 /* Supporting Files */,
 			);
 			path = UKEprogram;
