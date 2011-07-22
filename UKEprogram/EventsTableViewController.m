@@ -57,7 +57,6 @@ static int secondsInDay = 86400;
         for (int i = 0; i < [listOfEvents count]; i++) {
             e = (Event *)[listOfEvents objectAtIndex:i];
             thisDay = (int)[e.showingTime timeIntervalSinceDate:firstDate]/secondsInDay;
-            NSLog(@"Days since last event: %i", thisDay);
             if (thisDay != lastDay) {
                 NSDictionary *dict = [NSDictionary dictionaryWithObject:events forKey:@"Events"];
                 [sectListOfEvents addObject:dict];
@@ -101,36 +100,36 @@ static int secondsInDay = 86400;
  */
 -(void)showAllEvents{
     [self showEventsWithPredicate:Nil];
-    [filterButton setTitle:@"Alle" forState:UIControlStateNormal];
+    //[filterButton setTitle:@"Alle" forState:UIControlStateNormal];
 }
 -(void)showFavoriteEvents{
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"favorites == %i", 1];
     [self showEventsWithPredicate:predicate];
-    [filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
+    //[filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
 }
 -(void)showKonsertEvents
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventType == %@", @"konsert"];
     [self showEventsWithPredicate:predicate];
-    [filterButton setTitle:@"Konsert" forState:UIControlStateNormal];
+    //[filterButton setTitle:@"Konsert" forState:UIControlStateNormal];
 }
 -(void)showRevyEvents
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventType == %@", @"revy-og-teater"];
     [self showEventsWithPredicate:predicate];
-    [filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
+    //[filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
 }
 -(void)showKursEvents
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventType == %@", @"andelig-fode"];
     [self showEventsWithPredicate:predicate];
-    [filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
+    //[filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
 }
 -(void)showFestEvents
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"eventType == %@", @"fest-og-moro"];
     [self showEventsWithPredicate:predicate];
-    [filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
+    //[filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
 }
 
 -(void) scrollToDate:(NSDate *)date animated: (BOOL)animated
@@ -187,17 +186,19 @@ static int secondsInDay = 86400;
     [self.datePicker addTarget:self action:@selector(datePickClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.datePicker setHidden:YES];
     self.navigationItem.title = @"Program";
-    filterButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    datePickButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    filterButton.frame = CGRectMake(0, 0, 45, 30);
-    datePickButton.frame = CGRectMake(45, 0, 45, 30);
+    filterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    datePickButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    filterButton.frame = CGRectMake(0, 0, 36, 31);
+    datePickButton.frame = CGRectMake(36, 0, 36, 31);
     filterButton.tag = 3;
     datePickButton.tag = 4;
     [filterButton addTarget:self action:@selector(comboClicked:) forControlEvents:UIControlEventTouchUpInside];
     [datePickButton addTarget:self action:@selector(calClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [datePickButton setTitle:@"Dato" forState:UIControlStateNormal];
+    //[datePickButton setTitle:@"Dato" forState:UIControlStateNormal];
+    [filterButton setImage:[UIImage imageNamed:@"choose_button"] forState:UIControlStateNormal];
+    [datePickButton setImage:[UIImage imageNamed:@"calendar_button"] forState:UIControlStateNormal];
     
-    UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 5, 90, 30)];
+    UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 5, 72, 31)];
     [toolbar addSubview:filterButton];
     [toolbar addSubview:datePickButton];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
@@ -262,6 +263,7 @@ static int secondsInDay = 86400;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.tableView reloadData];
     [super viewWillAppear:animated];
 }
 
@@ -295,18 +297,12 @@ static int secondsInDay = 86400;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    //return 1;
-    NSLog(@"section count: %i", [sectListOfEvents count]);
     return [sectListOfEvents count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    //return [listOfEvents count];
     NSDictionary *dict = [sectListOfEvents objectAtIndex:section];
-    NSLog(@"section %i count: %i", section, [[dict objectForKey:@"Events"] count]); 
     return [[dict objectForKey:@"Events"] count];
 }
 
@@ -327,11 +323,11 @@ static int secondsInDay = 86400;
         UIButton *button = (UIButton *)[cell viewWithTag:3];
         if ([e.favorites intValue] > 0) {
             e.favorites = [NSNumber numberWithInt:0];
-            [button setBackgroundImage:delegate.uncheckedImage forState:UIControlStateNormal];
+            [button setImage:delegate.uncheckedImage forState:UIControlStateNormal];
         }
         else {
             e.favorites = [NSNumber numberWithInt:1];
-            [button setBackgroundImage:delegate.checkedImage forState:UIControlStateNormal];
+            [button setImage:delegate.checkedImage forState:UIControlStateNormal];
         }
         if (![con save:&error]) {
             NSLog(@"Lagring av %@ feilet", e.title);
@@ -369,9 +365,8 @@ static int secondsInDay = 86400;
     lblTemp.textColor = [UIColor lightGrayColor];
     [cell.contentView addSubview:lblTemp];
     [lblTemp release];
-    
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    CGRect ButtonFrame = CGRectMake(230, 5, delegate.uncheckedImage.size.width, delegate.uncheckedImage.size.height);
+    CGRect ButtonFrame = CGRectMake(260, 5, delegate.checkedImage.size.width*2, delegate.checkedImage.size.height*2);
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = ButtonFrame;
     button.tag = 3;
@@ -410,13 +405,12 @@ static int secondsInDay = 86400;
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     dateLabel.text = [NSString stringWithFormat:@"%@ - %@", [delegate.onlyTimeFormat stringFromDate:e.showingTime], e.place];
     
-    NSLog(@"Er favoritt: %i", [e.favorites intValue]);
-    
     if ([e.favorites intValue] > 0) {
-        [button setBackgroundImage:delegate.checkedImage forState:UIControlStateNormal];
+        [button setImage:delegate.checkedImage forState:UIControlStateNormal];
     }
     else {
-        [button setBackgroundImage:delegate.uncheckedImage forState:UIControlStateNormal];
+        
+        [button setImage:delegate.uncheckedImage forState:UIControlStateNormal];
     }
     
     return cell;

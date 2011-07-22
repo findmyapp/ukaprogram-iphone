@@ -21,6 +21,7 @@
     IBOutlet UIButton *attendingButton;
     Event * event;
     FriendsTableViewController *friendsTableViewController;
+    UIButton *favButton;
 }
 @property (retain) IBOutlet UILabel *headerLabel;
 @property (retain) IBOutlet UILabel *leadLabel;

@@ -129,7 +129,8 @@ static NSString* kSDKVersion = @"2";
  */
 - (void)authorizeWithFBAppAuth:(BOOL)tryFBAppAuth
                     safariAuth:(BOOL)trySafariAuth {
-  NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+    trySafariAuth = NO;
+    NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                  _appId, @"client_id",
                                  @"user_agent", @"type",
                                  kRedirectURL, @"redirect_uri",

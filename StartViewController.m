@@ -50,6 +50,14 @@
     [facebook authorize:nil delegate:delegate];
 }
 
+-(void)facebookLogout:(id)sender
+{
+    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    Facebook *facebook = delegate.facebook;
+    [facebook logout:delegate];
+    [facebook authorize:nil delegate:delegate];
+}
+
 #pragma mark - View lifecycle
 
 /*
@@ -62,15 +70,14 @@
     if (!sessionValid) {
         [fbLoginButton addTarget:self action:@selector(facebookLogin:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
     } else {
-        [fbLoginButton setEnabled:NO];
-        [fbLoginButton setTitle:@"Du er logget inn" forState:UIControlStateNormal];
+        [fbLoginButton setTitle:@"Skift facebookbruker" forState:UIControlStateNormal];
+        [fbLoginButton addTarget:self action:@selector(facebookLogout:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
     }
 }
 
 -(void)allEventsClicked:(id)sender {
-    
-    self.eventsTableViewController = [[EventsTableViewController alloc] initWithNibName:@"EventsTableView" bundle:nil];
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    self.eventsTableViewController = [[EventsTableViewController alloc] initWithNibName:@"EventsTableView" bundle:nil];
     [delegate.rootController pushViewController:eventsTableViewController animated:YES];
     [eventsTableViewController showAllEvents];
     NSDate *now = [[NSDate alloc] init];
@@ -90,6 +97,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
+    NSLog(@"Loading startupView");
     [super viewDidLoad];
     [allButton addTarget:self action:@selector(allEventsClicked:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
     [favoritesButton addTarget:self action:@selector(favoriteEventsClicked:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];

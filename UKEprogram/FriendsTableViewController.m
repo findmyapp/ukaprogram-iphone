@@ -10,6 +10,7 @@
 #import "Event.h"
 #import "UKEprogramAppDelegate.h"
 #import "EventDetailsViewController.h"
+#import "JSON.h"
 
 @implementation FriendsTableViewController
 
@@ -79,11 +80,21 @@
     NSLog(@"Connection closed");
     NSString *responseString = [[NSString alloc] initWithData:responseData  encoding:NSASCIIStringEncoding];
     [responseData release];
-    NSDictionary *results = [responseString JSONValue];
+    NSLog(@"recieved: %@", responseString);
+    NSArray *users = [responseString JSONValue];
     [responseString release];
     
+    //UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    //Facebook *facebook = delegate.facebook;
+    
+    for (int i = 0; i < [users count]; i++) {
+        NSString *name = [[[users objectAtIndex:i] objectForKey:@"facebookUserId"] stringValue];
+        
+        listOfFriends = [listOfFriends arrayByAddingObject:name];
+    }
     
     [friendTableView reloadData];
+    [eventDetailsViewController.friendsButton setTitle:[NSString stringWithFormat:@"%i venner skal delta", [listOfFriends count]] forState:UIControlStateNormal];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
@@ -97,7 +108,7 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError: (NSError *)error {
-    NSLog(@"DIDFAILWITHERROR");
+    NSLog(@"DIDFAILWITHERROR %@", error.description);
 }
 
 -(void) loadFriends:(EventDetailsViewController *) controller
@@ -108,7 +119,7 @@
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
     
-    NSString *eventsApiUrl = [NSString stringWithFormat: @"http://findmyapp.net/findmyapp/program/uka11/events"];
+    NSString *eventsApiUrl = [[NSString stringWithFormat: @"http://findmyapp.net/findmyapp/events/%i/friends?accessToken=%@", [event.id intValue], delegate.facebook.accessToken] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     responseData = [[NSMutableData data] retain];
     NSURLRequest *request = [NSURLRequest requestWithURL: [NSURL URLWithString:eventsApiUrl]];
     

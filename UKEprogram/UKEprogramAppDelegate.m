@@ -148,17 +148,16 @@
     [onlyDateFormat setDateFormat:@"dd.MM"];
     onlyTimeFormat  = [[NSDateFormatter alloc] init];
     [onlyTimeFormat setDateFormat:@"HH:mm"];
-    weekDays = [[NSArray alloc] initWithObjects:@"ubrukt",@"Sondag",@"Mandag",@"Tirsdag",@"Onsdag",@"Torsdag",@"Fredag",@"Lordag", nil];
-    checkedImage = [UIImage imageNamed:@"checked.png"];
-    uncheckedImage = [UIImage imageNamed:@"unchecked.png"];
+    weekDays = [[NSArray alloc] initWithObjects:@"ubrukt",@"S¿ndag",@"Mandag",@"Tirsdag",@"Onsdag",@"Torsdag",@"Fredag",@"L¿rdag", nil];
+    checkedImage = [UIImage imageNamed:@"favorite.png"];
+    uncheckedImage = [UIImage imageNamed:@"unfavorite.png"];
     
     
     facebook = [[Facebook alloc] initWithAppId:@"219501071426021"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults objectForKey:@"FBAccessTokenKey"] && [defaults objectForKey:@"FBExpirationDateKey"]) {
         facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
-        facebook.accessToken = [defaults objectForKey:@"FBExpirationDateKey"];
-        
+        facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
     }
     
     return YES;
