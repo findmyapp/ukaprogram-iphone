@@ -28,5 +28,6 @@
 @property (nonatomic, retain) NSNumber * ageLimit;
 @property (nonatomic, retain) NSNumber * favorites;
 @property (nonatomic, retain) NSNumber * lowestPrice;
+@property (nonatomic, retain) NSString * placeString;
 
 @end

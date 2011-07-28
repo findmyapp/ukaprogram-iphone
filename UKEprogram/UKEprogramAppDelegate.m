@@ -9,6 +9,7 @@
 #import "UKEprogramAppDelegate.h"
 #import "Event.h"
 #import "JSON.h"
+#import "OAuthConsumer.h"
 
 @implementation UKEprogramAppDelegate
 
@@ -26,24 +27,40 @@
 @synthesize checkedImage;
 @synthesize uncheckedImage;
 @synthesize facebook;
+@synthesize formattedToken;
+@synthesize consumer;
+@synthesize myEvents;
 
 @synthesize persistentStoreCoordinator=__persistentStoreCoordinator;
 
+NSNumber *flippedEventId;
+
+
+- (void)loginBackend 
+{
+    NSURL *url = [NSURL URLWithString:@"http://findmyapp.net/findmyapp/auth/login"];
+    
+    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:[self consumer] token:nil realm:nil signatureProvider:nil];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    OARequestParameter *tokenParam = [[OARequestParameter alloc] initWithName:@"facebookToken" value:self.facebook.accessToken];
+    NSArray *params = [NSArray arrayWithObjects:tokenParam, nil];
+    [request setParameters:params];
+    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestLogin:didFinishWithData:) didFailSelector:@selector(requestLogin:didFailWithError:)];
+}
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    [responseData setLength:0];
+    [eventResponseData setLength:0];
     NSLog(@"DIDRECEIVERESPONSE");
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [responseData appendData:data];
+    [eventResponseData appendData:data];
     NSLog(@"DIDRECEIVEDATA");
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError: (NSError *)error {
-    //self.twitterLabel.text = [NSString stringWithFormat:@"Connection failed: %@", [error description]];
-    //[myTableView setNeedsDisplay];
     NSLog(@"DIDFAILWITHERROR");
 }
 /**
@@ -51,25 +68,16 @@
  */
 - (void)getAllEvents {
     NSString *eventsApiUrl = [NSString stringWithFormat: @"http://findmyapp.net/findmyapp/program/uka11/events"];
-    //NSString *eventsApiUrl = [NSString stringWithFormat: @"http://localhost"];
-    responseData = [[NSMutableData data] retain];
-    NSURLRequest *request = [NSURLRequest requestWithURL: [NSURL URLWithString:eventsApiUrl]];
+    eventResponseData = [[NSMutableData data] retain];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:eventsApiUrl]];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     NSLog(@"Opening connection");
     [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
-
-/**
- *  Called when data is retrieved from connection, adds any new events to object context and displays only the events recieved from connection
- */
-#pragma mark NSURLConnection Delegate methods
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    //for returning a set of events and showing these
-    [connection release];
-    NSLog(@"Connection closed");
-    NSString *responseString = [[NSString alloc] initWithData:responseData  encoding:NSASCIIStringEncoding];
-    //NSLog(@"RESPONSE %i: %@", [responseData length] ,responseString);
-    [responseData release];
+- (void)fillEvents {
+    NSString *responseString = [[NSString alloc] initWithData:eventResponseData  encoding:NSUTF8StringEncoding];
+    [eventResponseData release];
     NSArray *events = [responseString JSONValue];
     [responseString release];
     NSLog(@"Number of events fetched: %i", [events count]);
@@ -103,7 +111,9 @@
             NSLog(@"Creating event with id: %@", id);
         }
         e.lowestPrice = [numberFormat numberFromString:[[event objectForKey:@"lowestPrice"] stringValue]];
-        e.showingTime = [dateFormat dateFromString:[event objectForKey:@"showingTime"]];
+        //e.showingTime = [dateFormat dateFromString:[event objectForKey:@"showingTime"]];
+        e.showingTime = [NSDate dateWithTimeIntervalSince1970:[[event objectForKey:@"showingTime"] longLongValue]/1000];
+        e.placeString = [event objectForKey:@"placeString"];
         e.place = [event objectForKey:@"place"];
         e.billigId = [numberFormat numberFromString:[[event objectForKey:@"billigId"] stringValue]];
         e.free = [event objectForKey:@"free"];
@@ -120,14 +130,80 @@
         } else {
             NSLog(@"Lagret event %@", e.title);
         }
-        
         //[listOfEvents addObject:e];
     }
     [numberFormat release];
     //[self updateTable];
     //[self showAllEvents];
+
+}
+- (void) getMyEvents
+{
+    NSURL *url = [NSURL URLWithString:@"http://findmyapp.net/findmyapp/users/me/events"];
+    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:[self consumer] token:nil realm:nil signatureProvider:nil];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    OARequestParameter *tokenParam = [[OARequestParameter alloc] initWithName:@"token" value:self.formattedToken];
+    NSArray *params = [NSArray arrayWithObjects:tokenParam, nil];
+    [request setParameters:params];
+    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestMyEvents:didFinishWithData:) didFailSelector:@selector(requestMyEvents:didFailWithError:)];
+}
+
+- (void) requestLogin:(OAServiceTicket *)ticket didFailWithError:(NSError *)error {
+    NSLog(@"unsuccessfull backend login %@", error);
+    //logout facebook?
+}
+
+- (void) requestLogin:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data {
+    NSString *responseString = [[NSString alloc] initWithData:data  encoding:NSASCIIStringEncoding];
+    NSLog(@"Login recieved: %@", responseString);
+    //NSDictionary *dict = [responseString JSONValue];
+    //[responseString release];
+    //NSString *tokenString = [dict objectForKey:@"token"];
+    //[tokenString retain];
+    [formattedToken release];
+    //formattedToken = tokenString;
+    formattedToken = [[responseString stringByReplacingOccurrencesOfString:@"\"" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    [responseString release];
+    [self getMyEvents];
+}
+- (void) requestMyEvents:(OAServiceTicket *)ticket didFailWithError:(NSError *)error {
+    NSLog(@"unsuccessfull loading of my events %@", error);
+}
+-(void) requestMyEvents:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data {
+    NSLog(@"successfull loading of my events");
+    NSString *responseString = [[NSString alloc] initWithData:data  encoding:NSASCIIStringEncoding];
+    NSArray *events = [responseString JSONValue];
+    NSLog(@"my events recieved: %@", responseString);
+    [myEvents release];
+    myEvents = [[NSMutableArray alloc] initWithCapacity:[events count]];
     
+    NSNumberFormatter *numberFormat = [[NSNumberFormatter alloc] init];
+    [numberFormat setNumberStyle:NSNumberFormatterDecimalStyle];
+    [responseString release];
+    for (int i = 0; i < [events count]; i++) {
+        NSDictionary *event = [events objectAtIndex:i];
+        NSNumber *num = [numberFormat numberFromString:[[event objectForKey:@"id"] stringValue]];
+        [myEvents addObject:num];
+    }
+    [numberFormat release];
+}
+/*
+    [self setFormattedToken:[[dict objectForKey:@"token"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [dict release];
+    NSLog(@"token: %@", formattedToken);
+}
+
+/**
+ *  Called when data is retrieved from connection, adds any new events to object context and displays only the events recieved from connection
+ */
+#pragma mark NSURLConnection Delegate methods
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    //for returning a set of events and showing these
     
+    NSLog(@"Data recieved");
+    [self fillEvents];
+    [connection release];
 }
 
 
@@ -153,12 +229,14 @@
     uncheckedImage = [UIImage imageNamed:@"unfavorite.png"];
     
     
-    facebook = [[Facebook alloc] initWithAppId:@"219501071426021"];
+    facebook = [[Facebook alloc] initWithAppId:@""];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults objectForKey:@"FBAccessTokenKey"] && [defaults objectForKey:@"FBExpirationDateKey"]) {
         facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
         facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
     }
+    
+    consumer = [[OAConsumer alloc] initWithKey:@"iphoneprogram" secret:@""];
     
     return YES;
 }
@@ -166,11 +244,67 @@
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     return [facebook handleOpenURL:url];
 }
-- (void) fbDidLogin {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[facebook accessToken] forKey:@"FBAccessTokenKey"];
-    [defaults setObject:[facebook expirationDate] forKey:@"FBExpirationDateKey"];
-    [defaults synchronize];
+
+
+
+- (BOOL)isInMyEvents:(NSNumber *)eid
+{
+    BOOL result = NO;
+    int num = [eid intValue];
+    if (myEvents == nil) {
+        return NO;
+    }
+    for (int i = 0; i < [myEvents count]; i++) {
+        if (num == [[myEvents objectAtIndex:i] intValue]) {
+            result = YES;
+            break;
+        }
+    }
+    return result;
+}
+
+- (void)changeAttendStatus:(NSString *)httpMethod eventId:(NSNumber *)eventId
+{
+    flippedEventId = eventId;
+    NSLog(@"%@ pŒ event %i", httpMethod, [eventId intValue]);
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://findmyapp.net/findmyapp/users/me/events/%i", [eventId intValue]]];
+    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:self.consumer token:nil realm:nil signatureProvider:nil];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setHTTPMethod:httpMethod];
+    OARequestParameter *token = [[OARequestParameter alloc] initWithName:@"token" value:self.formattedToken];
+    NSArray *params = [NSArray arrayWithObjects:token, nil];
+    [request setParameters:params];
+    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestAttendTicket:didFinishWithData:) didFailSelector:@selector(requestAttendTicket:didFailWithError:)];
+    
+}
+- (void)flipAttendStatus:(NSNumber *)eventId
+{
+    if ([self isInMyEvents:eventId]) {
+        [self changeAttendStatus:@"DELETE" eventId:eventId];
+    } else {
+        [self changeAttendStatus:@"POST" eventId:eventId];
+    }
+}
+- (void) requestAttendTicket:(OAServiceTicket *)ticket didFailWithError:(NSError *)error {
+    NSLog(@"unsuccessfull finish %@", error);
+}
+- (void) requestAttendTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data {
+    NSString *responseString = [[NSString alloc] initWithData:data  encoding:NSUTF8StringEncoding];
+    NSLog(@"Successfully recieved %@", responseString);
+    [responseString release];
+    //NSDictionary *settings = [responseString JSONValue];
+    //if ([settings objectForKey:@"success"]) {
+        if ([self isInMyEvents:flippedEventId]) {
+            [self.myEvents removeObject:flippedEventId];
+        } else {
+            [self.myEvents addObject:flippedEventId];
+        }
+    //}
+}
+- (BOOL) isLoggedIn
+{
+    return [self.facebook isSessionValid] && formattedToken != nil;
 }
 
 
@@ -214,6 +348,8 @@
 - (void)dealloc
 {
     [facebook release];
+    [myEvents release];
+    [formattedToken release];
     [weekDayFormat release];
     [onlyDateFormat release];
     [onlyTimeFormat release];
@@ -338,13 +474,6 @@
     }    
     
     return __persistentStoreCoordinator;
-}
-
--(void)fbDidLogout {
-    
-}
--(void)fbDidNotLogin:(BOOL)cancelled {
-    
 }
 
 #pragma mark - Application's Documents directory

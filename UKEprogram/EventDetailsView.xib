@@ -155,21 +155,23 @@
 							<object class="IBUIButton" id="803232764">
 								<reference key="NSNextResponder" ref="533559474"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{8, 228}, {184, 37}}</string>
+								<string key="NSFrame">{{8, 220}, {167, 37}}</string>
 								<reference key="NSSuperview" ref="533559474"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="824979513"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<object class="NSFont" key="IBUIFont" id="52819942">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">15</double>
+								<object class="NSFont" key="IBUIFont" id="740063002">
+									<string key="NSName">Helvetica</string>
+									<double key="NSSize">13</double>
 									<int key="NSfFlags">16</int>
 								</object>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">FacebookButton</string>
+								<double key="IBUIContentEdgeInsets.top">0.0</double>
+								<double key="IBUIContentEdgeInsets.bottom">0.0</double>
+								<double key="IBUIContentEdgeInsets.left">3</double>
+								<double key="IBUIContentEdgeInsets.right">0.0</double>
+								<string key="IBUINormalTitle">Loading...</string>
 								<reference key="IBUIHighlightedTitleColor" ref="657455027"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -179,11 +181,19 @@
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC41AA</bytes>
 								</object>
+								<object class="NSCustomResource" key="IBUINormalImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">faceIcon.png</string>
+								</object>
+								<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="110866797">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">mainbuttonfb.png</string>
+								</object>
 							</object>
 							<object class="IBUIButton" id="824979513">
 								<reference key="NSNextResponder" ref="533559474"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{200, 228}, {113, 37}}</string>
+								<string key="NSFrame">{{183, 220}, {130, 37}}</string>
 								<reference key="NSSuperview" ref="533559474"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="622096835"/>
@@ -191,15 +201,15 @@
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<reference key="IBUIFont" ref="52819942"/>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Jeg skal på button</string>
+								<reference key="IBUIFont" ref="740063002"/>
+								<string key="IBUINormalTitle">Loading...</string>
 								<reference key="IBUIHighlightedTitleColor" ref="657455027"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 								</object>
 								<reference key="IBUINormalTitleShadowColor" ref="588715253"/>
+								<reference key="IBUINormalBackgroundImage" ref="110866797"/>
 							</object>
 						</object>
 						<string key="NSFrameSize">{320, 460}</string>
@@ -324,11 +334,11 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="622096835"/>
-							<reference ref="824979513"/>
-							<reference ref="803232764"/>
 							<reference ref="544856050"/>
 							<reference ref="884885286"/>
 							<reference ref="539285789"/>
+							<reference ref="803232764"/>
+							<reference ref="824979513"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Scroll View</string>
@@ -379,6 +389,7 @@
 					<string>26.IBPluginDependency</string>
 					<string>28.IBPluginDependency</string>
 					<string>29.IBPluginDependency</string>
+					<string>29.IBUIButtonInspectorSelectedEdgeInsetMetadataKey</string>
 					<string>5.IBPluginDependency</string>
 					<string>7.IBPluginDependency</string>
 				</object>
@@ -393,6 +404,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
@@ -507,8 +519,19 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">template.png</string>
-			<string key="NS.object.0">{305, 175}</string>
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>faceIcon.png</string>
+				<string>mainbuttonfb.png</string>
+				<string>template.png</string>
+			</object>
+			<object class="NSMutableArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{26, 26}</string>
+				<string>{182, 56}</string>
+				<string>{305, 175}</string>
+			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">301</string>
 	</data>

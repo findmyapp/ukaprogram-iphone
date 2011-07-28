@@ -33,5 +33,7 @@
 @property (retain) IBOutlet UIButton *friendsButton;
 @property (retain) IBOutlet UIButton *attendingButton;
 
+-(void) setLoginButtons;
+
 @end
 

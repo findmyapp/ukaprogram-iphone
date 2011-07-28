@@ -31,4 +31,5 @@
 -(void) showKursEvents;
 -(void) showFestEvents;
 -(void) scrollToDate:(NSDate *)date animated:(BOOL)animated;
+-(void) setLoginButtons;
 @end

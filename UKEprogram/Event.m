@@ -25,5 +25,6 @@
 @dynamic ageLimit;
 @dynamic favorites;
 @dynamic lowestPrice;
+@dynamic placeString;
 
 @end

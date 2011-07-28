@@ -11,12 +11,13 @@
 #import "UKEprogramAppDelegate.h"
 #import "EventDetailsViewController.h"
 #import "JSON.h"
+#import "OAuthConsumer.h"
 
 @implementation FriendsTableViewController
 
 @synthesize listOfFriends;
-@synthesize friendTableView;
-@synthesize friendCountLabel;
+@synthesize friendsTableView;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,6 +30,7 @@
 
 - (void)dealloc
 {
+    [listOfFriends dealloc];
     [super dealloc];
 }
 
@@ -54,8 +56,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
-    [friendCountLabel setText:@"Loading..."];
-    listOfFriends = [[NSArray alloc] init];
     [super viewDidLoad];
 }
 
@@ -73,59 +73,55 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void) requestTicket:(OAServiceTicket *)ticket didFailWithError:(NSError *)error {
+    NSLog(@"unsuccessfull finish %@", error);
+    [eventDetailsViewController.friendsButton setHidden:YES];
+}
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [connection release];
+- (void) requestTicket:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data {
     NSLog(@"Connection closed");
-    NSString *responseString = [[NSString alloc] initWithData:responseData  encoding:NSASCIIStringEncoding];
-    [responseData release];
+    NSString *responseString = [[NSString alloc] initWithData:data  encoding:NSASCIIStringEncoding];
     NSLog(@"recieved: %@", responseString);
     NSArray *users = [responseString JSONValue];
     [responseString release];
-    
-    //UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    //Facebook *facebook = delegate.facebook;
-    
+
+    listOfFriends = [[NSMutableArray alloc] initWithCapacity:[users count]];
     for (int i = 0; i < [users count]; i++) {
-        NSString *name = [[[users objectAtIndex:i] objectForKey:@"facebookUserId"] stringValue];
-        
-        listOfFriends = [listOfFriends arrayByAddingObject:name];
+        NSDictionary *user = [users objectAtIndex:i];
+        NSString *name = [user objectForKey:@"fullName"];
+        [listOfFriends addObject:name];
     }
-    
-    [friendTableView reloadData];
     [eventDetailsViewController.friendsButton setTitle:[NSString stringWithFormat:@"%i venner skal delta", [listOfFriends count]] forState:UIControlStateNormal];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    [responseData setLength:0];
-    NSLog(@"DIDRECEIVERESPONSE");
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    [responseData appendData:data];
-    NSLog(@"DIDRECEIVEDATA");
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError: (NSError *)error {
-    NSLog(@"DIDFAILWITHERROR %@", error.description);
+    [self setTitle:[NSString stringWithFormat:@"%i venner skal delta", [listOfFriends count]]];
+    [eventDetailsViewController release];
 }
 
 -(void) loadFriends:(EventDetailsViewController *) controller
 {
     eventDetailsViewController = controller;
     Event *event = eventDetailsViewController.event;
-    [self setTitle:[NSString stringWithFormat:@"Friends at %@", event.title]];
+    //[self setTitle:[NSString stringWithFormat:@"Friends at %@", event.title]];
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
-    
-    NSString *eventsApiUrl = [[NSString stringWithFormat: @"http://findmyapp.net/findmyapp/events/%i/friends?accessToken=%@", [event.id intValue], delegate.facebook.accessToken] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    responseData = [[NSMutableData data] retain];
-    NSURLRequest *request = [NSURLRequest requestWithURL: [NSURL URLWithString:eventsApiUrl]];
-    
-    NSLog(@"Opening connection");
-    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://findmyapp.net/findmyapp/events/%i/friends", [event.id intValue]]];
+    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:delegate.consumer token:nil realm:nil signatureProvider:nil];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    OARequestParameter *tokenParam = [[OARequestParameter alloc] initWithName:@"token" value:delegate.formattedToken];
+    NSArray *params = [NSArray arrayWithObjects:tokenParam, nil];
+    [request setParameters:params];
+    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestTicket:didFinishWithData:) didFailSelector:@selector(requestTicket:didFailWithError:)];
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    [friendsTableView reloadData];
+    [super viewWillAppear:animated];
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -144,14 +140,15 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:CellIdentifier] autorelease];
     }
-    NSString *cellValue = [listOfFriends objectAtIndex:indexPath.row];
-    cell.textLabel.text = cellValue;
+    NSString *cellValue = (NSString *) [listOfFriends objectAtIndex:indexPath.row];
+    NSLog(@"Lagt til venn: %@", cellValue);
+    [cell.textLabel setText:[NSString stringWithFormat:@"%@", cellValue]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.friendTableView deselectRowAtIndexPath:indexPath animated:NO];
+    [self.friendsTableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 

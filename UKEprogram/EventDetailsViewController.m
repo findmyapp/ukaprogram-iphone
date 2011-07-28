@@ -12,6 +12,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Facebook.h"
 #import "FriendsTableViewController.h"
+#import "OAuthConsumer.h"
+#import "JSON.h"
+#import "StartViewController.h"
 
 /*IBOutlet UILabel *PlaceLabel;
 IBOutlet UILabel *DateLabel;
@@ -61,10 +64,21 @@ IBOutlet UIImage *eventImg;
 {
 }
 */
+- (void)attendDidChange
+{
+    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    if (![delegate isInMyEvents:event.id]) {
+        [attendingButton setTitle:@"Sett som deltakende" forState:UIControlStateNormal];
+    } else {
+        [attendingButton setTitle:@"Ikke delta" forState:UIControlStateNormal];
+    }
+}
+
 - (void)attendingClicked:(id)sender
 {
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    NSLog([delegate.facebook accessToken]);
+    [delegate flipAttendStatus:event.id];
+    [self attendDidChange];
 }
 
 - (void)pushFriendsView:(id)sender
@@ -72,6 +86,33 @@ IBOutlet UIImage *eventImg;
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     [delegate.rootController pushViewController:friendsTableViewController animated:YES];
 }
+
+
+- (void)setLoginButtons
+{
+    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    if (![delegate isLoggedIn]) {
+        [friendsButton setFrame:CGRectMake(8, 220, 250, 37)];
+        [friendsButton setTitle:@"Logg inn for å se deltakende venner" forState:UIControlStateNormal];
+        [friendsButton addTarget:self action:@selector(fbLoginClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [attendingButton setHidden:YES];
+    } else {
+        [friendsButton setFrame:CGRectMake(8, 220, 167, 37)];
+        [friendsButton setHidden:NO];
+        if (friendsTableViewController.listOfFriends == nil) {//prevent loading when friends are already loaded
+            [friendsTableViewController loadFriends:self];
+        }
+        [friendsButton addTarget:self action:@selector(pushFriendsView:) forControlEvents:UIControlEventTouchUpInside];
+        if (![delegate isLoggedIn]) {
+            [attendingButton setHidden:YES];
+        } else {
+            [self attendDidChange];
+            [attendingButton setHidden:NO];
+            [attendingButton addTarget:self action:@selector(attendingClicked:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+}
+
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 /**
@@ -95,7 +136,7 @@ IBOutlet UIImage *eventImg;
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     NSString *weekday = [delegate.weekDays objectAtIndex:[[delegate.weekDayFormat stringFromDate:event.showingTime] intValue]];
     NSString *dateString = [[NSString alloc] initWithFormat:@"%@ %@", [delegate.onlyDateFormat stringFromDate:event.showingTime], [delegate.onlyTimeFormat stringFromDate:event.showingTime]]; 
-    NSString *labelText = [[NSString alloc] initWithFormat:@"%@ %@ %@ %i,-", event.place, weekday, dateString, [event.lowestPrice intValue]];
+    NSString *labelText = [[NSString alloc] initWithFormat:@"%@ %@ %@ %i,-", event.placeString, weekday, dateString, [event.lowestPrice intValue]];
     [weekday release];
     [dateString release];
     [headerLabel setText:labelText];
@@ -109,41 +150,12 @@ IBOutlet UIImage *eventImg;
     //Set the lead and text labels to the size found
     [leadLabel setFrame:CGRectMake(11, 275, 300, leadHeight)];
     [textLabel setFrame:CGRectMake(11, 290 + leadHeight, 300, textHeight)];
-    
-    //muligens sjekke variabel for om bildet skal lastes ned
-    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:event.image]]];
-    if (img != nil) {
-        NSLog(@"Bildet %@ hentet", event.thumbnail);
-        eventImgView.image = img;
-    }
-    
+
     sView = (UIScrollView *) self.view;
     sView.contentSize=CGSizeMake(1, leadHeight + textHeight + 290);//1 is less than width of iphone
-    
-    //placeLabel.layer.cornerRadius = 4;
-    //dateLabel.layer.cornerRadius = 4;
-    notInUseLabel.layer.cornerRadius = 4;
-    
     friendsTableViewController = [[FriendsTableViewController alloc] initWithNibName:@"FriendsTableView" bundle:nil];
+    [friendsTableViewController retain];
     
-    
-    Facebook *facebook = delegate.facebook;
-    if (![facebook isSessionValid]) {
-        //[friendsButton setTitle:@"Logg inn på face" forState:UIControlStateNormal];
-        //[attendingButton setTitle:@"Login with facebook" forState:UIControlStateNormal];
-        //[friendsButton addTarget:self action:@selector(facebookLogin:) forControlEvents:UIControlEventTouchUpInside];
-        //[attendingButton addTarget:self action:@selector(facebookLogin:) forControlEvents:UIControlEventTouchUpInside];
-        [friendsButton setHidden:true];
-        [attendingButton setHidden:true];
-    } else {
-        NSLog(@"DU ER LOGGET INN");
-        [friendsButton setTitle:@"Loading..." forState:UIControlStateNormal];
-        [attendingButton setTitle:@"Loading..." forState:UIControlStateNormal];
-        [friendsTableViewController loadFriends:self];
-        [friendsButton addTarget:self action:@selector(pushFriendsView:) forControlEvents:UIControlEventTouchUpInside];
-        [attendingButton addTarget:self action:@selector(attendingClicked:) forControlEvents:UIControlEventTouchUpInside];
-        //askforfriends...
-    }
     
     CGRect ButtonFrame = CGRectMake(0, 0, delegate.checkedImage.size.width*2, delegate.checkedImage.size.height*2);
     favButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -156,8 +168,6 @@ IBOutlet UIImage *eventImg;
        [favButton setImage:delegate.uncheckedImage forState:UIControlStateNormal];
     }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:favButton];
-    
-    //[textLabel setText:[event.showingTime 
 }
 
 - (void)favoritesClicked:(id)sender
@@ -179,13 +189,33 @@ IBOutlet UIImage *eventImg;
         NSLog(@"Lagret event %@", event.title);
     }
 }
-
-- (void)viewWillAppear:(BOOL)animated
+- (void)fbLoginClicked:(id)sender
 {
-    
+    NSArray *views = self.navigationController.viewControllers;
+    StartViewController *sView = (StartViewController *)[views objectAtIndex:0];
+    [sView loginFacebook];
 }
 
 
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (friendsTableViewController.listOfFriends == nil) {//prevent loading when friends are already loaded
+        //check if you should load image?
+        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://uka.no/%@", event.image]]]];
+        if (img != nil) {
+            NSLog(@"Bildet %@ hentet", event.image);
+            eventImgView.image = img;
+        }
+    }
+    [self setLoginButtons];
+}
 
 - (void)viewDidUnload
 {

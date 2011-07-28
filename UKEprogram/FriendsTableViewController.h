@@ -10,16 +10,14 @@
 
 @class EventDetailsViewController;
 @interface FriendsTableViewController : UIViewController {
-    IBOutlet UILabel *friendCountLabel;
-    IBOutlet UITableView *friendTableView;
-    NSArray *listOfFriends;
+    IBOutlet UITableView *friendsTableView;
+    NSMutableArray *listOfFriends;
     NSMutableData *responseData;
     EventDetailsViewController *eventDetailsViewController;
 }
 
-@property (nonatomic, retain) NSArray *listOfFriends;
-@property (nonatomic, retain) UILabel *friendCountLabel;
-@property (nonatomic, retain) UITableView *friendTableView;
+@property (nonatomic, retain) NSMutableArray *listOfFriends;
+@property (nonatomic, retain) UITableView *friendsTableView;
 
 
 -(void) loadFriends:(EventDetailsViewController *) controller;
