@@ -40,13 +40,17 @@ NSNumber *flippedEventId;
 {
     NSURL *url = [NSURL URLWithString:@"http://findmyapp.net/findmyapp/auth/login"];
     
-    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:[self consumer] token:nil realm:nil signatureProvider:nil];
+    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url consumer:[self consumer] token:nil realm:nil signatureProvider:nil] autorelease];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     OARequestParameter *tokenParam = [[OARequestParameter alloc] initWithName:@"facebookToken" value:self.facebook.accessToken];
     NSArray *params = [NSArray arrayWithObjects:tokenParam, nil];
     [request setParameters:params];
-    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    OADataFetcher *fetcher = [[[OADataFetcher alloc] init] autorelease];
     [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestLogin:didFinishWithData:) didFailSelector:@selector(requestLogin:didFailWithError:)];
+    
+    //[request release];
+    [tokenParam release];
+    //[fetcher release];
 }
 
 
@@ -130,23 +134,24 @@ NSNumber *flippedEventId;
         } else {
             NSLog(@"Lagret event %@", e.title);
         }
-        //[listOfEvents addObject:e];
     }
     [numberFormat release];
-    //[self updateTable];
-    //[self showAllEvents];
-
 }
 - (void) getMyEvents
 {
     NSURL *url = [NSURL URLWithString:@"http://findmyapp.net/findmyapp/users/me/events"];
-    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:[self consumer] token:nil realm:nil signatureProvider:nil];
+    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url consumer:[self consumer] token:nil realm:nil signatureProvider:nil] autorelease];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     OARequestParameter *tokenParam = [[OARequestParameter alloc] initWithName:@"token" value:self.formattedToken];
     NSArray *params = [NSArray arrayWithObjects:tokenParam, nil];
     [request setParameters:params];
-    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    OADataFetcher *fetcher = [[[OADataFetcher alloc] init] autorelease];
     [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestMyEvents:didFinishWithData:) didFailSelector:@selector(requestMyEvents:didFailWithError:)];
+    
+    //[request release];
+    [tokenParam release];
+    //[fetcher release];
+    //[params release];
 }
 
 - (void) requestLogin:(OAServiceTicket *)ticket didFailWithError:(NSError *)error {
@@ -157,13 +162,9 @@ NSNumber *flippedEventId;
 - (void) requestLogin:(OAServiceTicket *)ticket didFinishWithData:(NSData *)data {
     NSString *responseString = [[NSString alloc] initWithData:data  encoding:NSASCIIStringEncoding];
     NSLog(@"Login recieved: %@", responseString);
-    //NSDictionary *dict = [responseString JSONValue];
-    //[responseString release];
-    //NSString *tokenString = [dict objectForKey:@"token"];
-    //[tokenString retain];
     [formattedToken release];
-    //formattedToken = tokenString;
     formattedToken = [[responseString stringByReplacingOccurrencesOfString:@"\"" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    [formattedToken retain];
     [responseString release];
     [self getMyEvents];
 }
@@ -174,7 +175,7 @@ NSNumber *flippedEventId;
     NSLog(@"successfull loading of my events");
     NSString *responseString = [[NSString alloc] initWithData:data  encoding:NSASCIIStringEncoding];
     NSArray *events = [responseString JSONValue];
-    NSLog(@"my events recieved: %@", responseString);
+    //NSLog(@"my events recieved: %@", responseString);
     [myEvents release];
     myEvents = [[NSMutableArray alloc] initWithCapacity:[events count]];
     
@@ -268,15 +269,18 @@ NSNumber *flippedEventId;
     flippedEventId = eventId;
     NSLog(@"%@ på event %i", httpMethod, [eventId intValue]);
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://findmyapp.net/findmyapp/users/me/events/%i", [eventId intValue]]];
-    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:self.consumer token:nil realm:nil signatureProvider:nil];
+    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url consumer:self.consumer token:nil realm:nil signatureProvider:nil] autorelease];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setHTTPMethod:httpMethod];
     OARequestParameter *token = [[OARequestParameter alloc] initWithName:@"token" value:self.formattedToken];
     NSArray *params = [NSArray arrayWithObjects:token, nil];
     [request setParameters:params];
-    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    OADataFetcher *fetcher = [[[OADataFetcher alloc] init] autorelease];
     [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestAttendTicket:didFinishWithData:) didFailSelector:@selector(requestAttendTicket:didFailWithError:)];
     
+    //[request release];
+    [token release];
+    //[fetcher release];
 }
 - (void)flipAttendStatus:(NSNumber *)eventId
 {
@@ -341,12 +345,6 @@ NSNumber *flippedEventId;
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Saves changes in the application's managed object context before the application terminates.
-    [self saveContext];
-}
-
-- (void)dealloc
-{
     [facebook release];
     [myEvents release];
     [formattedToken release];
@@ -362,6 +360,12 @@ NSNumber *flippedEventId;
     [__managedObjectContext release];
     [__managedObjectModel release];
     [__persistentStoreCoordinator release];
+    // Saves changes in the application's managed object context before the application terminates.
+    [self saveContext];
+}
+
+- (void)dealloc
+{
     [super dealloc];
 }
 

@@ -45,7 +45,7 @@ IBOutlet UIImage *eventImg;
 - (void)dealloc
 {
     [super dealloc];
-    [favButton dealloc];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,7 +140,7 @@ IBOutlet UIImage *eventImg;
     [weekday release];
     [dateString release];
     [headerLabel setText:labelText];
-    
+    [labelText release];
     //find the size of lead and description text
     CGSize constraintSize = CGSizeMake(300.0f, MAXFLOAT);
     CGSize labelSize = [event.text sizeWithFont:textLabel.font constrainedToSize:constraintSize lineBreakMode:UILineBreakModeWordWrap];
@@ -154,12 +154,10 @@ IBOutlet UIImage *eventImg;
     sView = (UIScrollView *) self.view;
     sView.contentSize=CGSizeMake(1, leadHeight + textHeight + 290);//1 is less than width of iphone
     friendsTableViewController = [[FriendsTableViewController alloc] initWithNibName:@"FriendsTableView" bundle:nil];
-    [friendsTableViewController retain];
     
     
-    CGRect ButtonFrame = CGRectMake(0, 0, delegate.checkedImage.size.width*2, delegate.checkedImage.size.height*2);
     favButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    favButton.frame = ButtonFrame;
+    favButton.frame = CGRectMake(0, 0, delegate.checkedImage.size.width*2, delegate.checkedImage.size.height*2);
     [favButton addTarget:self action:@selector(favoritesClicked:) forControlEvents:UIControlEventTouchUpInside];
     if ([event.favorites intValue] > 0) {
         [favButton setImage:delegate.checkedImage forState:UIControlStateNormal];
@@ -167,7 +165,7 @@ IBOutlet UIImage *eventImg;
     else {
        [favButton setImage:delegate.uncheckedImage forState:UIControlStateNormal];
     }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:favButton];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:favButton] autorelease];
 }
 
 - (void)favoritesClicked:(id)sender
@@ -223,6 +221,8 @@ IBOutlet UIImage *eventImg;
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     [friendsTableViewController release];
+    [favButton release];
+    [event release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

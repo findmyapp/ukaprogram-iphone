@@ -36,8 +36,6 @@
 
 - (void)dealloc
 {
-    [settingsViewController dealloc];
-    [eventsTableViewController dealloc];
     [super dealloc];
 }
 
@@ -50,6 +48,7 @@
 }
 -(void)settingsClicked:(id)sender
 {
+    [settingsViewController release];
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     self.settingsViewController = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
     [delegate.rootController pushViewController:settingsViewController animated:YES];
@@ -138,6 +137,8 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    [settingsViewController release];
+    [eventsTableViewController release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -62,6 +62,7 @@
 
 - (void)viewDidUnload
 {
+    [listOfFriends release];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -94,6 +95,8 @@
     [eventDetailsViewController.friendsButton setTitle:[NSString stringWithFormat:@"%i venner skal delta", [listOfFriends count]] forState:UIControlStateNormal];
     [self setTitle:[NSString stringWithFormat:@"%i venner skal delta", [listOfFriends count]]];
     [eventDetailsViewController release];
+    
+    
 }
 
 -(void) loadFriends:(EventDetailsViewController *) controller
@@ -104,13 +107,17 @@
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://findmyapp.net/findmyapp/events/%i/friends", [event.id intValue]]];
-    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:delegate.consumer token:nil realm:nil signatureProvider:nil];
+    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url consumer:delegate.consumer token:nil realm:nil signatureProvider:nil] autorelease];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     OARequestParameter *tokenParam = [[OARequestParameter alloc] initWithName:@"token" value:delegate.formattedToken];
     NSArray *params = [NSArray arrayWithObjects:tokenParam, nil];
     [request setParameters:params];
-    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    OADataFetcher *fetcher = [[[OADataFetcher alloc] init] autorelease];
     [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestTicket:didFinishWithData:) didFailSelector:@selector(requestTicket:didFailWithError:)];
+    
+    //[request release];
+    [tokenParam release];
+    //[fetcher release];
 }
 - (void)viewWillAppear:(BOOL)animated
 {

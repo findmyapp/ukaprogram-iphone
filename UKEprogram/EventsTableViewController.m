@@ -37,13 +37,8 @@ static int secondsInDay = 86400;
     [sectListOfEvents release];
     sectListOfEvents = [[NSMutableArray alloc] init];
     if ([listOfEvents count] > 0) {
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"showingTime" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        [listOfEvents sortUsingDescriptors:sortDescriptors];
-        [sortDescriptor release];
+        
     
-        [sectListOfEvents release];
-        sectListOfEvents = [[NSMutableArray alloc] init];
     
         //Find first date (with time set to 00:00:00)
         Event *e = (Event *)[listOfEvents objectAtIndex:0];
@@ -52,26 +47,22 @@ static int secondsInDay = 86400;
         NSDate *firstDate = [gregorian dateFromComponents:comp];
     
         //add events to sections based on time since firstdate
-        int lastDay = 0;
-        int thisDay;
-        NSArray *events = [[NSArray alloc] init];
+        NSNumber *lastDay = 0;
+        NSMutableArray *events = [[NSMutableArray alloc] init];
         for (int i = 0; i < [listOfEvents count]; i++) {
             e = (Event *)[listOfEvents objectAtIndex:i];
-            thisDay = (int)[e.showingTime timeIntervalSinceDate:firstDate]/secondsInDay;
-            if (thisDay != lastDay) {
+            if ((int)[e.showingTime timeIntervalSinceDate:firstDate]/secondsInDay != [lastDay intValue]) {
                 NSDictionary *dict = [NSDictionary dictionaryWithObject:events forKey:@"Events"];
                 [sectListOfEvents addObject:dict];
-                events = [[NSArray alloc] init];
+                [events release];
+                events = [[NSMutableArray alloc] init];
             }
-            lastDay = thisDay;
-            events = [events arrayByAddingObject:e];
-        
+            lastDay = [NSNumber numberWithInt:[e.showingTime timeIntervalSinceDate:firstDate]/secondsInDay];
+            [events addObject:e];
         }
-        NSDictionary *dict = [NSDictionary dictionaryWithObject:events forKey:@"Events"];
-        [sectListOfEvents addObject:dict];
-    
+        [sectListOfEvents addObject:[NSDictionary dictionaryWithObject:events forKey:@"Events"]];
+        [events release];
         [gregorian release];
-        [eventsTableView reloadData];
         //[sectListOfEvents release];
         datePicker.minimumDate = [[listOfEvents objectAtIndex:0] showingTime];
         datePicker.date = [[listOfEvents objectAtIndex:0] showingTime];
@@ -87,12 +78,21 @@ static int secondsInDay = 86400;
     NSError *error;
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *con = [delegate managedObjectContext];
-    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"showingTime" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [request setSortDescriptors:sortDescriptors];
+    [sortDescriptor release];
+    
+    
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event" inManagedObjectContext:con];
     [request setEntity:entity];
     [request setPredicate:predicate];
-    NSMutableArray *array = [[con executeFetchRequest:request error:&error] mutableCopy];
-    [self setListOfEvents:array];
+    
+    [self setListOfEvents:[[con executeFetchRequest:request error:&error] mutableCopy]];
+    [request release];
+    //[self setListOfEvents:array];
     [self updateTable];
 }
 
@@ -106,6 +106,7 @@ static int secondsInDay = 86400;
 -(void)showFavoriteEvents{
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"favorites == %i", 1];
     [self showEventsWithPredicate:predicate];
+    
     //[filterButton setTitle:@"Favoritt" forState:UIControlStateNormal];
 }
 -(void)showKonsertEvents
@@ -164,10 +165,18 @@ static int secondsInDay = 86400;
 
 - (void)dealloc
 {
-    [self.eventDetailsViewController release];
-    [sectListOfEvents release];
+    /*
+    [self.eventDetailsViewController dealloc];
+    [self.listOfEvents dealloc];
+    [self.filterViewController dealloc];
+    [filterButton dealloc];
+    [sectListOfEvents dealloc];
+    [datePickButton dealloc];
+    [editAttendingButton dealloc];
+    [toolbar dealloc];*/
     [super dealloc];
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -214,6 +223,7 @@ static int secondsInDay = 86400;
     [toolbar addSubview:datePickButton];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
     
+    
     [self setLoginButtons];
 }
 - (void)setLoginButtons
@@ -229,10 +239,21 @@ static int secondsInDay = 86400;
 
 - (void)viewDidUnload
 {
-    [sectListOfEvents release];
+    [self.eventDetailsViewController release];
+    [self.listOfEvents release];
+    [self.filterViewController release];
     [filterButton release];
+    [sectListOfEvents release];
     [datePickButton release];
     [editAttendingButton release];
+    [toolbar release];
+    
+    
+    //[sectListOfEvents release];
+    [listOfEvents release];
+    //[filterButton release];
+    //[datePickButton release];
+    //[editAttendingButton release];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -279,6 +300,7 @@ static int secondsInDay = 86400;
 
 - (void)comboClicked:(id)sender
 {
+    [filterViewController release];
     self.filterViewController = [[FilterViewController alloc] initWithNibName:@"FilterView" bundle:nil];
     [self.filterViewController setEventsTableViewController:self];
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
@@ -451,7 +473,6 @@ static int secondsInDay = 86400;
         [button setImage:delegate.uncheckedImage forState:UIControlStateNormal];
     }
     if ([delegate isLoggedIn] && [delegate isInMyEvents:e.id]) {
-        NSLog(@"in my events: %@", e.title);
         UILabel *attendLabel = (UILabel *)[cell viewWithTag:4];
         attendLabel.text = @"Deltar";
         //titleLabel.text = [NSString stringWithFormat:@"%@ - Attending", e.title];
@@ -476,47 +497,6 @@ static int secondsInDay = 86400;
 
 
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
 #pragma mark - Table view delegate
 /**
  *  Creates a new detailed view of an event
@@ -529,7 +509,7 @@ static int secondsInDay = 86400;
         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     else if (!editAttending) {
-        self.eventDetailsViewController = [[EventDetailsViewController alloc] initWithNibName:@"EventDetailsView" bundle:nil];
+        eventDetailsViewController = [[EventDetailsViewController alloc] initWithNibName:@"EventDetailsView" bundle:nil];
         eventDetailsViewController.event = (Event *) [[[sectListOfEvents objectAtIndex:indexPath.section] objectForKey:@"Events"] objectAtIndex:indexPath.row];
         [delegate.rootController pushViewController:eventDetailsViewController animated:YES];
     }

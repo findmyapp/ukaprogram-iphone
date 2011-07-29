@@ -88,11 +88,11 @@ BOOL loading;
 - (void)dealloc
 {
     [super dealloc];
-    [settingsName dealloc];
+    /*[settingsName dealloc];
     [settingsValue dealloc];
     [currentValue dealloc];
     [settingsRealName dealloc];
-    [selectedValue dealloc];
+    [selectedValue dealloc];*/
 }
 
 - (void)didReceiveMemoryWarning
@@ -133,12 +133,18 @@ BOOL loading;
     
     loading = NO;
     [settingsTableView reloadData];
+    [responseString release];
+    //[data release];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    NSLog(@"TOOKEN %@", delegate.formattedToken);
+    
     settingsName = [[NSArray alloc] initWithObjects:@"Deling av posisjonsdata",@"Deling av arrangementsdata",@"Deling av pengebruk",@"Deling av media", nil];
     settingsRealName = [[NSArray alloc] initWithObjects:@"positionPrivacySetting",@"eventsPrivacySetting",@"moneyPrivacySetting",@"mediaPrivacySetting", nil];
     settingsValue = [[NSArray alloc] initWithObjects:@"Alle",@"Venner",@"Bare meg", nil];
@@ -148,18 +154,20 @@ BOOL loading;
     self.navigationItem.title = @"Innstillinger for UKApps";
     
     //OAuth
-    UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    
     NSURL *url = [NSURL URLWithString:@"http://findmyapp.net/findmyapp/users/me/privacy"];
-    //NSURL *url = [NSURL URLWithString:@"http://129.241.223.245:8080/findmyapp/cashless/friends"];
-    OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:delegate.consumer token:nil realm:nil signatureProvider:nil];//should default sha1
+    OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url consumer:delegate.consumer token:nil realm:nil signatureProvider:nil] autorelease];//should default sha1
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     OARequestParameter *token = [[OARequestParameter alloc] initWithName:@"token" value:delegate.formattedToken];
     NSArray *params = [NSArray arrayWithObjects:token, nil];
     [request setParameters:params];
-    OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+    OADataFetcher *fetcher = [[[OADataFetcher alloc] init] autorelease];
     [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestTicket:didFinishWithData:) didFailSelector:@selector(requestTicket:didFailWithError:)];
     
+    
+    
+    [token release];
     /*
     NSString *eventsApiUrl = [NSString stringWithFormat: @"http://findmyapp.net/findmyapp/users/1/privacy"];
     responseData = [[NSMutableData data] retain];
@@ -175,6 +183,11 @@ BOOL loading;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    [settingsName release];
+    [settingsValue release];
+    [currentValue release];
+    [settingsRealName release];
+    [selectedValue release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -203,7 +216,7 @@ BOOL loading;
         
         
         NSURL *url = [NSURL URLWithString:@"http://findmyapp.net/findmyapp/users/me/privacy"];
-        OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:url consumer:delegate.consumer token:nil realm:nil signatureProvider:nil];
+        OAMutableURLRequest *request = [[[OAMutableURLRequest alloc] initWithURL:url consumer:delegate.consumer token:nil realm:nil signatureProvider:nil] autorelease];
         [request setHTTPMethod:@"POST"];
         [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
         NSNumber *num = [NSNumber numberWithInt:([[NSNumber numberWithUnsignedInteger:indexPath.row] intValue] + 1)];
@@ -213,8 +226,13 @@ BOOL loading;
         OARequestParameter *token = [[OARequestParameter alloc] initWithName:@"token" value:delegate.formattedToken];
         NSArray *params = [NSArray arrayWithObjects:postData, token, nil];
         [request setParameters:params];
-        OADataFetcher *fetcher = [[OADataFetcher alloc] init];
+        OADataFetcher *fetcher = [[[OADataFetcher alloc] init] autorelease];
         [fetcher fetchDataWithRequest:request delegate:self didFinishSelector:@selector(requestTicket:didFinishWithData:) didFailSelector:@selector(requestTicket:didFailWithError:)];
+        
+        //[request release];
+        [postData release];
+        [token release];
+        //[fetcher release];
     }
 }
 
@@ -225,19 +243,16 @@ BOOL loading;
 
 - (UITableViewCell *) getCellContentView:(NSString *)cellIdentifier 
 {
-    CGRect CellFrame = CGRectMake(0, 0, 300, 35);
-    CGRect LabelFrame = CGRectMake(10, 5, 290, 30);
-    CGRect viewFrame = CGRectMake(250, 10, 30, 30);
     UILabel *lblTemp;
-    UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CellFrame] autorelease];
+    UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, 300, 35)] autorelease];
     UIImageView *tempView;
     //Initialize Label with tag 1.
-    lblTemp = [[UILabel alloc] initWithFrame:LabelFrame];
+    lblTemp = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 290, 30)];
     lblTemp.tag = 1;
     [cell.contentView addSubview:lblTemp];
     [lblTemp release];
     
-    tempView = [[UIImageView alloc] initWithFrame:viewFrame];
+    tempView = [[UIImageView alloc] initWithFrame:CGRectMake(250, 10, 30, 30)];
     tempView.tag = 2;
     [cell.contentView addSubview:tempView];
     [tempView release];
@@ -266,7 +281,6 @@ BOOL loading;
     else if ([[selectedValue objectAtIndex:indexPath.section] isEqualToNumber:[NSNumber numberWithUnsignedInteger:indexPath.row ]]) {
         [view setImage:currentValue];
     }
-    
     
     
     return cell;
