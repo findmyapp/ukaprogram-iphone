@@ -20,6 +20,8 @@
 @synthesize listOfEvents;
 @synthesize datePicker;
 @synthesize filterViewController;
+@synthesize eTableView;
+@synthesize pickerView;
 UIButton *filterButton;
 UIButton *datePickButton;
 UIButton *editAttendingButton;
@@ -28,8 +30,43 @@ BOOL editAttending;
 //int days;
 NSMutableArray *sectListOfEvents;
 static int secondsInDay = 86400;
+static int pickerWidth = 50;
+static int pickerOffset = 135;
+bool isUsingPicker = NO;
+
+
 /**
- * Called to sort and show list of events
+ * Create labels for date-picking horizontal scrollview at top
+ */
+
+
+-(void)createPickerDates
+{
+    UKEprogramAppDelegate *del = [[UIApplication sharedApplication] delegate];
+    NSDateFormatter *onlyDateFormat = del.onlyDateFormat;
+    
+    for(UIView *subview in [pickerView subviews]) {
+        [subview removeFromSuperview];
+    }
+    CGRect rect = CGRectMake(pickerOffset, 0, pickerWidth, pickerView.bounds.size.height);
+    int i;
+    for(i = 0; i < sectListOfEvents.count; i++) {
+        Event *e = [[[sectListOfEvents objectAtIndex:i] objectForKey:@"Events"] objectAtIndex:0];
+        UILabel *lbl = [[UILabel alloc] initWithFrame:rect];
+        lbl.font = [UIFont systemFontOfSize:12];
+        [lbl setNumberOfLines:2];
+        [lbl setText:[NSString stringWithFormat:@"%@\n%@", [del getWeekDay:e.showingTime], [onlyDateFormat stringFromDate:e.showingTime]]];
+        [pickerView addSubview:lbl];
+        NSLog(@"Added picker %@", lbl.text);
+        //[lbl release];
+        rect.origin.x += pickerWidth;
+    }
+    pickerView.contentSize = CGSizeMake(2*pickerOffset+i*pickerWidth, 1);
+    
+}
+
+/**
+ * Called to show list of events
  */
 -(void)updateTable {
     //sort by starting date
@@ -68,10 +105,14 @@ static int secondsInDay = 86400;
         datePicker.date = [[listOfEvents objectAtIndex:0] showingTime];
         datePicker.maximumDate = [[listOfEvents objectAtIndex:[listOfEvents count]-1] showingTime];
     }
+    [self createPickerDates];
     NSLog(@"Table updatet");
-    [self.tableView reloadData];
+    [eTableView reloadData];
+    
     
 }
+
+
 
 -(void)showEventsWithPredicate:(NSPredicate *)predicate
 {
@@ -150,10 +191,11 @@ static int secondsInDay = 86400;
         }
     }
     if (found) {
-        [[self tableView] scrollToRowAtIndexPath:scrollPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        [eTableView scrollToRowAtIndexPath:scrollPath atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
 }
 
+/*
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -161,7 +203,7 @@ static int secondsInDay = 86400;
         // Custom initialization
     }
     return self;
-}
+}*/
 
 - (void)dealloc
 {
@@ -191,6 +233,11 @@ static int secondsInDay = 86400;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [eTableView setDelegate:self];
+    [eTableView setDataSource:self];
+    [pickerView setDelegate:self];
+    
     editAttending = NO;
     listOfEvents = [[NSMutableArray alloc] init];
     [self.datePicker addTarget:self action:@selector(datePickChanged:) forControlEvents:UIControlEventValueChanged];
@@ -262,7 +309,7 @@ static int secondsInDay = 86400;
 
 - (CGPoint) makeGoodPickerPosition
 {
-    CGPoint topLeft = [self.tableView contentOffset];
+    CGPoint topLeft = [eTableView contentOffset];
     topLeft.x = 160;
     topLeft.y = topLeft.y + 310;
     return topLeft;
@@ -270,27 +317,27 @@ static int secondsInDay = 86400;
 
 - (void) datePickChanged:(id)sender
 {
-    BOOL scrollEnabled = [self.tableView isScrollEnabled];
-    [self.tableView setScrollEnabled:YES];
+    BOOL scrollEnabled = [self.eTableView isScrollEnabled];
+    [self.eTableView setScrollEnabled:YES];
     [self scrollToDate:[datePicker date] animated:NO];
-    [self.tableView setScrollEnabled:scrollEnabled];
+    [self.eTableView setScrollEnabled:scrollEnabled];
     [self.datePicker setCenter:[self makeGoodPickerPosition]];
 }
 - (void) hideDatePicker
 {
     [datePicker removeFromSuperview];
     [self.datePicker setHidden:YES];
-    [self.tableView setScrollEnabled:YES];
+    [self.eTableView setScrollEnabled:YES];
 }
 
 - (void)calClicked:(id)sender
 {
     if ([self.datePicker isHidden]) {
-        [self.tableView insertSubview:datePicker aboveSubview:self.parentViewController.view];
+        [self.eTableView insertSubview:datePicker aboveSubview:self.parentViewController.view];
         [self.datePicker setHidden:NO];
-        [self.tableView setContentOffset:[self.tableView contentOffset] animated:NO];
+        [self.eTableView setContentOffset:[self.eTableView contentOffset] animated:NO];
         [self.datePicker setCenter:[self makeGoodPickerPosition]];
-        [self.tableView setScrollEnabled:NO];
+        [self.eTableView setScrollEnabled:NO];
     } else {
         [self hideDatePicker];
     }
@@ -321,7 +368,7 @@ static int secondsInDay = 86400;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self.tableView reloadData];
+    [self.eTableView reloadData];
     [super viewWillAppear:animated];
 }
 
@@ -369,15 +416,15 @@ static int secondsInDay = 86400;
     
     NSSet *touches = [event allTouches];
     UITouch *touch = [touches anyObject];
-    CGPoint currentTouchPosition = [touch locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:currentTouchPosition];
+    CGPoint currentTouchPosition = [touch locationInView:self.eTableView];
+    NSIndexPath *indexPath = [self.eTableView indexPathForRowAtPoint:currentTouchPosition];
     if (indexPath != nil) {
         NSError *error;
         UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         NSManagedObjectContext *con = [delegate managedObjectContext];
         
         Event *e = (Event *)[[[sectListOfEvents objectAtIndex:indexPath.section] objectForKey:@"Events"] objectAtIndex:indexPath.row];
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        UITableViewCell *cell = [self.eTableView cellForRowAtIndexPath:indexPath];
         UIButton *button = (UIButton *)[cell viewWithTag:3];
         if ([e.favorites intValue] > 0) {
             e.favorites = [NSNumber numberWithInt:0];
@@ -506,7 +553,7 @@ static int secondsInDay = 86400;
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     if (![datePicker isHidden]) {
         [self hideDatePicker];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        [self.eTableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     else if (!editAttending) {
         eventDetailsViewController = [[EventDetailsViewController alloc] initWithNibName:@"EventDetailsView" bundle:nil];
@@ -514,9 +561,53 @@ static int secondsInDay = 86400;
         [delegate.rootController pushViewController:eventDetailsViewController animated:YES];
     }
     else {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        [self.eTableView deselectRowAtIndexPath:indexPath animated:NO];
         [delegate flipAttendStatus:[[[[sectListOfEvents objectAtIndex:indexPath.section] objectForKey:@"Events"] objectAtIndex:indexPath.row] id]];
-        [self.tableView reloadData];
+        [self.eTableView reloadData];
     }
 }
+
+/**
+ * Catches both datepick- and tableview-scrollevents should perhaps only update once every x milliseconds
+ */
+- (void)scrollViewDidScroll:(UIScrollView *)sView
+{
+    if (isUsingPicker && sView == pickerView) {
+        int pos = (sView.contentOffset.x * [sectListOfEvents count]) / (sView.contentSize.width - pickerOffset*2);//finds the section
+        pos = MAX(0, pos);
+        pos = MIN([sectListOfEvents count]-1, pos);
+        //NSLog(@"scrolling to %i, name %i", pos, [[NSNumber numberWithInteger:sView.tag] intValue]);
+        NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:pos];
+        [eTableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    } else if (!isUsingPicker && sView == eTableView) {
+        int index = [[NSNumber numberWithUnsignedInteger:[[eTableView indexPathForRowAtPoint:CGPointMake(10, eTableView.contentOffset.y + 40)] section]] intValue];
+        //NSLog(@"Pos is %i", index);
+        [pickerView setContentOffset:CGPointMake(index*pickerWidth, 0) animated:YES];
+        
+    }
+}
+/*- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    if (scrollView == pickerView) {
+        isUsingPicker = NO;
+        NSLog(@"Stopped using picker");
+    } else {
+        
+    }
+}*/
+
+/**
+ * Sets what view user is scrolling in
+ */
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if (scrollView == pickerView) {
+        isUsingPicker = YES;
+        //NSLog(@"Started picker");
+    } else {
+        isUsingPicker = NO;
+        //NSLog(@"Stopped using picker");
+    }
+}
+
 @end

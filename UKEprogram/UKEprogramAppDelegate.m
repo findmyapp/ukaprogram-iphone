@@ -36,6 +36,7 @@
 NSNumber *flippedEventId;
 
 
+
 - (void)loginBackend 
 {
     NSURL *url = [NSURL URLWithString:@"http://findmyapp.net/findmyapp/auth/login"];
@@ -230,14 +231,14 @@ NSNumber *flippedEventId;
     uncheckedImage = [UIImage imageNamed:@"unfavorite.png"];
     
     
-    facebook = [[Facebook alloc] initWithAppId:@""];
+    facebook = [[Facebook alloc] initWithAppId:@"219501071426021"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults objectForKey:@"FBAccessTokenKey"] && [defaults objectForKey:@"FBExpirationDateKey"]) {
         facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
         facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
     }
     
-    consumer = [[OAConsumer alloc] initWithKey:@"iphoneprogram" secret:@""];
+    consumer = [[OAConsumer alloc] initWithKey:@"iphoneprogram" secret:@"ahtu873487hagnba"];
     
     return YES;
 }
@@ -488,6 +489,11 @@ NSNumber *flippedEventId;
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+- (NSString *)getWeekDay:(NSDate *)date
+{
+    return [weekDays objectAtIndex:[[weekDayFormat stringFromDate:date] intValue]];
 }
 
 @end

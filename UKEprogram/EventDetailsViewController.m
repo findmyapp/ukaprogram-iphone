@@ -134,10 +134,8 @@ IBOutlet UIImage *eventImg;
     [textLabel setText:event.text];
     
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    NSString *weekday = [delegate.weekDays objectAtIndex:[[delegate.weekDayFormat stringFromDate:event.showingTime] intValue]];
     NSString *dateString = [[NSString alloc] initWithFormat:@"%@ %@", [delegate.onlyDateFormat stringFromDate:event.showingTime], [delegate.onlyTimeFormat stringFromDate:event.showingTime]]; 
-    NSString *labelText = [[NSString alloc] initWithFormat:@"%@ %@ %@ %i,-", event.placeString, weekday, dateString, [event.lowestPrice intValue]];
-    [weekday release];
+    NSString *labelText = [[NSString alloc] initWithFormat:@"%@ %@ %@ %i,-", event.placeString, [delegate getWeekDay:event.showingTime], dateString, [event.lowestPrice intValue]];
     [dateString release];
     [headerLabel setText:labelText];
     [labelText release];

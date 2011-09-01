@@ -53,4 +53,5 @@
 - (BOOL)isInMyEvents:(NSNumber *)eid;
 - (void)flipAttendStatus:(NSNumber *)eventId;
 - (BOOL)isLoggedIn;
+- (NSString *)getWeekDay:(NSDate *)date;
 @end
