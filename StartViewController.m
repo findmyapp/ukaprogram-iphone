@@ -61,6 +61,7 @@
 }
 -(void)loginFacebook
 {
+    NSLog(@"LoginClicked");
     UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     Facebook *facebook = delegate.facebook;
     [facebook authorize:nil delegate:self];
@@ -83,12 +84,14 @@
 
 - (void)setLoggedIn:(bool)sessionValid {
     if (!sessionValid) {
-        [fbLoginButton addTarget:self action:@selector(facebookLogin:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
-        [fbLoginButton setTitle:@"Logg på facebook" forState:UIControlStateNormal];
+        [fbLoginButton removeTarget:self action:@selector(facebookLogout:) forControlEvents:UIControlEventTouchUpInside];
+        [fbLoginButton addTarget:self action:@selector(facebookLogin:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside];
+        [fbLoginButton setTitle:@"Logg på" forState:UIControlStateNormal];
         [settingsButton setHidden:YES];
     } else {
-        [fbLoginButton addTarget:self action:@selector(facebookLogout:) forControlEvents:(UIControlEvents)UIControlEventTouchDown];
-        [fbLoginButton setTitle:@"Bytt facebookbruker" forState:UIControlStateNormal];
+        [fbLoginButton removeTarget:self action:@selector(facebookLogin:) forControlEvents:UIControlEventTouchUpInside];
+        [fbLoginButton addTarget:self action:@selector(facebookLogout:) forControlEvents:(UIControlEvents)UIControlEventTouchUpInside];
+        [fbLoginButton setTitle:@"Logg ut" forState:UIControlStateNormal];
         [settingsButton setHidden:NO];
         UKEprogramAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
         [delegate loginBackend];
@@ -190,6 +193,7 @@
     [defaults setObject:[delegate.facebook accessToken] forKey:@"FBAccessTokenKey"];
     [defaults synchronize];
     [self setLoggedIn: [delegate.facebook isSessionValid]];
+    [self notifyViews];
 }
 -(void)fbDidNotLogin:(BOOL)cancelled {
     

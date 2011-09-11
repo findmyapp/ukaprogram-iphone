@@ -57,6 +57,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [friendsTableView setDelegate:self];
 }
 
 
@@ -155,6 +156,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"AAaaaa");
     [self.friendsTableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 

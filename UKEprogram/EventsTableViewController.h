@@ -12,8 +12,6 @@
 
 @interface EventsTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate> {
     IBOutlet UITableView *eventsTableView;
-    IBOutlet UIDatePicker *datePicker;
-    IBOutlet UITableView *eTableView;
     IBOutlet UIScrollView *pickerView;
     NSMutableArray *listOfEvents;
     EventDetailsViewController *eventDetailsViewController;
@@ -23,9 +21,8 @@
 @property (nonatomic, retain) UIScrollView *pickerView;
 @property (nonatomic, retain) NSMutableArray *listOfEvents;
 @property (nonatomic, retain) EventDetailsViewController *eventDetailsViewController;
-@property (nonatomic, retain) UIDatePicker *datePicker;
 @property (nonatomic, retain) FilterViewController *filterViewController;
-@property (nonatomic, retain) UITableView *eTableView;
+@property (nonatomic, retain) UITableView *eventsTableView;
 
 -(void) showAllEvents;
 -(void) showFavoriteEvents;

@@ -19,6 +19,7 @@
     IBOutlet UIScrollView *sView;
     IBOutlet UIButton *friendsButton;
     IBOutlet UIButton *attendingButton;
+    UIActivityIndicatorView *loadSpinner;
     Event * event;
     FriendsTableViewController *friendsTableViewController;
     UIButton *favButton;
@@ -32,6 +33,7 @@
 @property (retain) IBOutlet UILabel *notInUseLabel;
 @property (retain) IBOutlet UIButton *friendsButton;
 @property (retain) IBOutlet UIButton *attendingButton;
+@property (retain) UIActivityIndicatorView *loadSpinner;
 
 -(void) setLoginButtons;
 

@@ -10,6 +10,7 @@
 #import "Event.h"
 #import "JSON.h"
 #import "OAuthConsumer.h"
+//#import "Reachability.h"
 
 @implementation UKEprogramAppDelegate
 
@@ -155,6 +156,27 @@ NSNumber *flippedEventId;
     //[params release];
 }
 
+- (UIColor *) getColorForEventCategory:(NSString *)category
+{
+    UIColor *color;
+    if ([category isEqualToString:@"konsert"]) {
+        color = [UIColor purpleColor];
+        color = [UIColor colorWithRed:0.686 green:0.576 blue:0.776 alpha:1.0];
+    } else if ([category isEqualToString:@"revy-og-teater"]) {
+        color = [UIColor orangeColor];
+        color = [UIColor colorWithRed:0.976 green:0.717 blue:0.545 alpha:1.0];
+    } else if ([category isEqualToString:@"andelig-fode"]) {
+        color = [UIColor cyanColor];
+        color = [UIColor colorWithRed:0.5 green:0.854 blue:0.898 alpha:1.0];
+    } else if ([category isEqualToString:@"fest-og-moro"]) {
+        color = [UIColor magentaColor];
+        color = [UIColor colorWithRed:0.92 green:0.698 blue:0.827 alpha:1.0];
+    } else {
+        color = [UIColor lightGrayColor];
+    }
+    return color;
+}
+
 - (void) requestLogin:(OAServiceTicket *)ticket didFailWithError:(NSError *)error {
     NSLog(@"unsuccessfull backend login %@", error);
     //logout facebook?
@@ -208,6 +230,26 @@ NSNumber *flippedEventId;
     [connection release];
 }
 
+-(void) checkReachability
+{
+    //Reachability *r = [Reachability reachabilityForInternetConnection];
+    //NetworkStatus internetStatus = [r currentReachabilityStatus];
+    //if(internetStatus == NotReachable) {
+    if (NO) {
+        NSString *melding = [[NSString alloc] initWithString:@"Denne appen trenger tilgang til internett for Œ laste nyeste versjon av programmet. Tidligere lastet program vil bli vist."];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Ingen nettilgang!" 
+														message:melding 
+													   delegate:nil 
+											  cancelButtonTitle:@"OK" 
+											  otherButtonTitles: nil];
+		[alert show];
+		[alert release];
+        [melding release];
+    } else {
+        [self getAllEvents];
+    }
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -215,7 +257,7 @@ NSNumber *flippedEventId;
     [self.window addSubview:rootController.view];
     dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm"];
-    [self getAllEvents];
+    [self checkReachability];
     // Override point for customization after application launch.
     [self.window makeKeyAndVisible];
     
@@ -230,7 +272,6 @@ NSNumber *flippedEventId;
     checkedImage = [UIImage imageNamed:@"favorite.png"];
     uncheckedImage = [UIImage imageNamed:@"unfavorite.png"];
     
-    
     facebook = [[Facebook alloc] initWithAppId:@"219501071426021"];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults objectForKey:@"FBAccessTokenKey"] && [defaults objectForKey:@"FBExpirationDateKey"]) {
@@ -238,7 +279,7 @@ NSNumber *flippedEventId;
         facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
     }
     
-    consumer = [[OAConsumer alloc] initWithKey:@"iphoneprogram" secret:@"ahtu873487hagnba"];
+    consumer = [[OAConsumer alloc] initWithKey:@"f0dd03cd03008bc28eb479957a2525fad84124cd" secret:@"d96b13251e446e21d396c677f3cf1e071085b8fb"];
     
     return YES;
 }
@@ -309,6 +350,9 @@ NSNumber *flippedEventId;
 }
 - (BOOL) isLoggedIn
 {
+    //Reachability *r = [Reachability reachabilityForInternetConnection];
+    //NetworkStatus internetStatus = [r currentReachabilityStatus];
+    //return internetStatus != NotReachable && [self.facebook isSessionValid] && formattedToken != nil;
     return [self.facebook isSessionValid] && formattedToken != nil;
 }
 

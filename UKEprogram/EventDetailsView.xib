@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10K540</string>
+		<string key="IBDocument.SystemVersion">10K549</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1306</string>
 		<string key="IBDocument.AppKitVersion">1038.36</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
@@ -57,11 +57,15 @@
 								<reference key="NSSuperview" ref="533559474"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="803232764"/>
+								<object class="NSColor" key="IBUIBackgroundColor" id="657455027">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
+								</object>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<object class="NSCustomResource" key="IBUIImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">template.png</string>
+									<string key="NSResourceName">placeHolderImage.png</string>
 								</object>
 							</object>
 							<object class="IBUILabel" id="622096835">
@@ -71,19 +75,16 @@
 								<reference key="NSSuperview" ref="533559474"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="539285789"/>
-								<object class="NSColor" key="IBUIBackgroundColor" id="657455027">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="657455027"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Lead (also set in controller)</string>
-								<object class="NSFont" key="IBUIFont">
+								<object class="NSFont" key="IBUIFont" id="975655716">
 									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">12</double>
+									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<object class="NSColor" key="IBUITextColor" id="111512739">
@@ -115,7 +116,7 @@
 								<string key="IBUIText">Description (size and position set in eventDetailsViewController.m)</string>
 								<object class="NSFont" key="IBUIFont">
 									<string key="NSName">Helvetica</string>
-									<double key="NSSize">12</double>
+									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
 								</object>
 								<reference key="IBUITextColor" ref="111512739"/>
@@ -141,11 +142,7 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">Header</string>
-								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">14</double>
-									<int key="NSfFlags">16</int>
-								</object>
+								<reference key="IBUIFont" ref="975655716"/>
 								<reference key="IBUITextColor" ref="657455027"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -524,7 +521,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>faceIcon.png</string>
 				<string>mainbuttonfb.png</string>
-				<string>template.png</string>
+				<string>placeHolderImage.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>

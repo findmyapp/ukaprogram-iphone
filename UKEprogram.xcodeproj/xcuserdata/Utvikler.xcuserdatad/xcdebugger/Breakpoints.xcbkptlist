@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/EventDetailsViewController.m"
-         timestampString = "336529861.853421"
+         timestampString = "337454585.375303"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "166"
-         endingLineNumber = "166"
+         startingLineNumber = "175"
+         endingLineNumber = "175"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/EventsTableViewController.m"
-         timestampString = "336536142.300834"
+         timestampString = "337309606.804696"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "109"
-         endingLineNumber = "109"
+         startingLineNumber = "158"
+         endingLineNumber = "158"
          landmarkName = "@implementation EventsTableViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -37,11 +37,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/EventsTableViewController.m"
-         timestampString = "336536142.300834"
+         timestampString = "337309606.804696"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "109"
-         endingLineNumber = "109"
+         startingLineNumber = "158"
+         endingLineNumber = "158"
          landmarkName = "@implementation EventsTableViewController"
          landmarkType = "3">
       </FileBreakpoint>
@@ -51,25 +51,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/EventsTableViewController.m"
-         timestampString = "336536142.300834"
+         timestampString = "337458541.14249"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "406"
-         endingLineNumber = "406"
-         landmarkName = "-tableView:numberOfRowsInSection:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "UKEprogram/EventsTableViewController.m"
-         timestampString = "336536142.300834"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "532"
-         endingLineNumber = "532"
+         startingLineNumber = "555"
+         endingLineNumber = "555"
          landmarkName = "-tableView:titleForHeaderInSection:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -79,11 +65,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/EventDetailsViewController.m"
-         timestampString = "336529861.853421"
+         timestampString = "337454585.375303"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "165"
-         endingLineNumber = "165"
+         startingLineNumber = "172"
+         endingLineNumber = "172"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -93,11 +79,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/FriendsTableViewController.m"
-         timestampString = "333590598.459118"
+         timestampString = "337457560.089083"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "75"
-         endingLineNumber = "75"
+         startingLineNumber = "76"
+         endingLineNumber = "76"
          landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -135,11 +121,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/UKEprogramAppDelegate.m"
-         timestampString = "336536142.300834"
+         timestampString = "337308566.622751"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "196"
-         endingLineNumber = "196"
+         startingLineNumber = "218"
+         endingLineNumber = "218"
          landmarkName = "-loggedIn"
          landmarkType = "5">
       </FileBreakpoint>
@@ -149,11 +135,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/UKEprogramAppDelegate.m"
-         timestampString = "336536142.300834"
+         timestampString = "337308566.622751"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "195"
-         endingLineNumber = "195"
+         startingLineNumber = "217"
+         endingLineNumber = "217"
          landmarkName = "-loggedIn"
          landmarkType = "5">
       </FileBreakpoint>
@@ -163,12 +149,26 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "UKEprogram/EventDetailsViewController.m"
-         timestampString = "333534074.536948"
+         timestampString = "337311854.311632"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "81"
-         endingLineNumber = "81"
+         startingLineNumber = "82"
+         endingLineNumber = "82"
          landmarkName = "-attendingClicked:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         isPathRelative = "1"
+         filePath = "StartViewController.m"
+         timestampString = "336574936.350161"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "87"
+         endingLineNumber = "87"
+         landmarkName = "-setLoggedIn:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

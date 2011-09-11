@@ -82,6 +82,10 @@
 		1992924813B9F4D6001689C8 /* iPhoneIcon_Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 1992924713B9F4D6001689C8 /* iPhoneIcon_Small.png */; };
 		1992924B13BA01B5001689C8 /* ApiWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 1992924A13BA01B5001689C8 /* ApiWrapper.m */; };
 		1997656913D9AC890041B03D /* currentValue.png in Resources */ = {isa = PBXBuildFile; fileRef = 1997656813D9AC890041B03D /* currentValue.png */; };
+		19A3CDCA141AF50A00C8501E /* datePickerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 19A3CDC7141AF50A00C8501E /* datePickerBackground.png */; };
+		19A3CDCB141AF50A00C8501E /* datePickerTransparentLayer.png in Resources */ = {isa = PBXBuildFile; fileRef = 19A3CDC8141AF50A00C8501E /* datePickerTransparentLayer.png */; };
+		19A3CDCC141AF50A00C8501E /* tableRowHeader.png in Resources */ = {isa = PBXBuildFile; fileRef = 19A3CDC9141AF50A00C8501E /* tableRowHeader.png */; };
+		19A3CDCF141D29E900C8501E /* placeHolderImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 19A3CDCE141D29E900C8501E /* placeHolderImage.png */; };
 		19C8FAD313BDB19B001B5CB9 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 19C8FAD213BDB19B001B5CB9 /* Default.png */; };
 /* End PBXBuildFile section */
 
@@ -213,6 +217,10 @@
 		1992924913BA01B5001689C8 /* ApiWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApiWrapper.h; sourceTree = "<group>"; };
 		1992924A13BA01B5001689C8 /* ApiWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiWrapper.m; sourceTree = "<group>"; };
 		1997656813D9AC890041B03D /* currentValue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = currentValue.png; sourceTree = "<group>"; };
+		19A3CDC7141AF50A00C8501E /* datePickerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = datePickerBackground.png; sourceTree = "<group>"; };
+		19A3CDC8141AF50A00C8501E /* datePickerTransparentLayer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = datePickerTransparentLayer.png; sourceTree = "<group>"; };
+		19A3CDC9141AF50A00C8501E /* tableRowHeader.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tableRowHeader.png; sourceTree = "<group>"; };
+		19A3CDCE141D29E900C8501E /* placeHolderImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeHolderImage.png; sourceTree = "<group>"; };
 		19C8FAD213BDB19B001B5CB9 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -234,6 +242,7 @@
 		191C30FD13D84CC4007B091B /* images */ = {
 			isa = PBXGroup;
 			children = (
+				19A3CDCE141D29E900C8501E /* placeHolderImage.png */,
 				1961163A13E1AB6F00B1DCB5 /* katbutton3dalle.png */,
 				1961163B13E1AB6F00B1DCB5 /* katbutton3dfest.png */,
 				1961163C13E1AB7000B1DCB5 /* katbutton3dkonsert.png */,
@@ -250,6 +259,9 @@
 				1961162E13E090B700B1DCB5 /* delta_pressed.png */,
 				1961164613E1B33500B1DCB5 /* mainbuttonfb.png */,
 				1992924713B9F4D6001689C8 /* iPhoneIcon_Small.png */,
+				19A3CDC7141AF50A00C8501E /* datePickerBackground.png */,
+				19A3CDC8141AF50A00C8501E /* datePickerTransparentLayer.png */,
+				19A3CDC9141AF50A00C8501E /* tableRowHeader.png */,
 				1997656813D9AC890041B03D /* currentValue.png */,
 				198B19F813D8296D003AD828 /* unfavorite.png */,
 				198B19F713D8296D003AD828 /* favorite.png */,
@@ -265,13 +277,6 @@
 				1961163013E09DEC00B1DCB5 /* faceIcon.png */,
 			);
 			name = images;
-			sourceTree = "<group>";
-		};
-		196115EB13DEAF6100B1DCB5 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "New Group";
 			sourceTree = "<group>";
 		};
 		196115F513DEB23100B1DCB5 /* Linked Frameworks */ = {
@@ -398,7 +403,6 @@
 		1992922013B9C3F3001689C8 /* UKEprogram */ = {
 			isa = PBXGroup;
 			children = (
-				196115EB13DEAF6100B1DCB5 /* New Group */,
 				198B199F13D444A3003AD828 /* Facebook */,
 				1992924113B9EC5A001689C8 /* Model */,
 				1992922913B9C3F3001689C8 /* UKEprogramAppDelegate.h */,
@@ -540,6 +544,10 @@
 				1961164213E1AB7300B1DCB5 /* katbutton3dkurs.png in Resources */,
 				1961164513E1ABDD00B1DCB5 /* katbutton3drevy.png in Resources */,
 				1961164713E1B33600B1DCB5 /* mainbuttonfb.png in Resources */,
+				19A3CDCA141AF50A00C8501E /* datePickerBackground.png in Resources */,
+				19A3CDCB141AF50A00C8501E /* datePickerTransparentLayer.png in Resources */,
+				19A3CDCC141AF50A00C8501E /* tableRowHeader.png in Resources */,
+				19A3CDCF141D29E900C8501E /* placeHolderImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

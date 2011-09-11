@@ -49,6 +49,7 @@
 
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+- (UIColor *) getColorForEventCategory:(NSString *)category;
 - (void)loginBackend;
 - (BOOL)isInMyEvents:(NSNumber *)eid;
 - (void)flipAttendStatus:(NSNumber *)eventId;

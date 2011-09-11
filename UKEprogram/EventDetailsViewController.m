@@ -32,6 +32,7 @@ IBOutlet UIImage *eventImg;
 @synthesize notInUseLabel;
 @synthesize attendingButton;
 @synthesize friendsButton;
+@synthesize loadSpinner;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -121,6 +122,12 @@ IBOutlet UIImage *eventImg;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //Put the loadSpinner into the eventImgView
+    loadSpinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [loadSpinner setCenter:CGPointMake(eventImgView.frame.size.width/2, eventImgView.frame.size.height/2)];
+    [eventImgView addSubview:loadSpinner];
+    
     [self setTitle:event.title];
     event.lead = [event.lead stringByReplacingOccurrencesOfString:@"\r\n\r\n" withString:@"###"];
     event.lead = [event.lead stringByReplacingOccurrencesOfString:@"\r\n" withString:@" "];
@@ -164,6 +171,8 @@ IBOutlet UIImage *eventImg;
        [favButton setImage:delegate.uncheckedImage forState:UIControlStateNormal];
     }
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:favButton] autorelease];
+    
+    
 }
 
 - (void)favoritesClicked:(id)sender
@@ -188,8 +197,8 @@ IBOutlet UIImage *eventImg;
 - (void)fbLoginClicked:(id)sender
 {
     NSArray *views = self.navigationController.viewControllers;
-    StartViewController *sView = (StartViewController *)[views objectAtIndex:0];
-    [sView loginFacebook];
+    StartViewController *stView = (StartViewController *)[views objectAtIndex:0];
+    [stView loginFacebook];
 }
 
 
@@ -197,20 +206,59 @@ IBOutlet UIImage *eventImg;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    //Start spinner
+    [loadSpinner startAnimating];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (friendsTableViewController.listOfFriends == nil) {//prevent loading when friends are already loaded
-        //check if you should load image?
+    
+    //Check if you should load Image
+    NSString *docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    //Create file manager
+    NSError *error;
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    
+    //Extract the filename
+    NSArray *split = [event.image componentsSeparatedByString:@"/"];
+    NSString *fileNameWithoutExtention = [split objectAtIndex:[split count] - 1];
+    fileNameWithoutExtention = [fileNameWithoutExtention stringByDeletingPathExtension];
+    
+    //Find all stored images
+    NSArray *listOfImages = [fileMgr contentsOfDirectoryAtPath:docDir error:&error];
+    NSString *savedImage;
+    
+    BOOL doWeNeedToDownLoadImage = YES;
+    
+    for (id file in listOfImages) {
+        if ([file isKindOfClass:[NSString class]] && [[file stringByDeletingPathExtension] isEqualToString:fileNameWithoutExtention] ) {
+            doWeNeedToDownLoadImage = NO;
+            savedImage = [NSString stringWithFormat:@"%@/%@", docDir, file];
+            break;
+        }
+    }
+    
+    if (doWeNeedToDownLoadImage) {
         UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://uka.no/%@", event.image]]]];
         if (img != nil) {
-            NSLog(@"Bildet %@ hentet", event.image);
+            NSLog(@"IMAGE DOWNLOADED");
+            eventImgView.image = img;
+            NSString *jpegFilePath = [NSString stringWithFormat:@"%@/%@.jpeg",docDir,fileNameWithoutExtention];
+            NSData *data = [NSData dataWithData:UIImageJPEGRepresentation(img, 1.0f)];//1.0f = 100% quality
+            [data writeToFile:jpegFilePath atomically:YES];
+        }
+    } else {
+        UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfFile:savedImage]];
+        if (img != nil) {
             eventImgView.image = img;
         }
     }
+    
+    
     [self setLoginButtons];
+    [loadSpinner stopAnimating];
 }
 
 - (void)viewDidUnload
@@ -221,6 +269,7 @@ IBOutlet UIImage *eventImg;
     [friendsTableViewController release];
     [favButton release];
     [event release];
+    [loadSpinner release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class EventDetailsViewController;
-@interface FriendsTableViewController : UIViewController {
+@interface FriendsTableViewController : UIViewController <UITableViewDelegate> {
     IBOutlet UITableView *friendsTableView;
     NSMutableArray *listOfFriends;
     NSMutableData *responseData;
